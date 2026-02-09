@@ -1,0 +1,3228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1B2A4A">
+  <title>Le'Fam Central</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Fonts — Playfair Display (headings) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+/* ============================================================
+   LE'FAM CENTRAL — "The Magic Kingdom of Home"
+   Aesthetic: Disneyland-inspired, elegant but not over-the-top
+   Golden accents, parchment textures, enchanted details
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  /* Enchanted Palette */
+  --clr-bg: #FDF8EF;
+  --clr-surface: #FFFFFF;
+  --clr-surface-alt: #F9F3E8;
+  --clr-parchment: #F4E8D1;
+  --clr-border: #E8DFD0;
+  --clr-text: #1B2A4A;
+  --clr-text-muted: #7A7265;
+  --clr-accent: #D4AF37;
+  --clr-accent-hover: #C19B2E;
+  --clr-accent-light: #FFF8E7;
+  --clr-accent-glow: rgba(212, 175, 55, 0.25);
+  --clr-sidebar: #1B2A4A;
+  --clr-sidebar-deep: #142140;
+  --clr-sidebar-text: #B8C4D9;
+  --clr-sidebar-active: #D4AF37;
+  --clr-success: #2E7D5B;
+  --clr-warning: #C4962C;
+  --clr-danger: #C0392B;
+  --clr-info: #6C5CE7;
+
+  /* Enchanted Shadows */
+  --shadow-sm: 0 1px 4px rgba(27, 42, 74, 0.05);
+  --shadow-md: 0 4px 16px rgba(27, 42, 74, 0.08);
+  --shadow-lg: 0 8px 32px rgba(27, 42, 74, 0.12);
+  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.2);
+  --shadow-gold-lg: 0 8px 30px rgba(212, 175, 55, 0.3);
+
+  /* Spacing */
+  --sidebar-width: 260px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 50px;
+  --mobile-tab-height: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  margin: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── LAYOUT ──────────────────────────────────────── */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 2rem 2.5rem;
+  max-width: 1200px;
+}
+
+.page-content { display: none; }
+.page-content.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────── */
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: linear-gradient(180deg, var(--clr-sidebar) 0%, var(--clr-sidebar-deep) 100%);
+  padding: 0 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Castle silhouette header */
+.sidebar-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 0.25rem 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.sidebar-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -1.25rem; right: -1.25rem;
+  height: 100%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 80'%3E%3Cpath d='M0,80 L0,55 L15,55 L15,35 L20,30 L25,35 L25,55 L40,55 L40,40 L50,20 L55,25 L60,15 L65,25 L70,20 L80,40 L80,55 L100,55 L100,45 L105,40 L110,45 L110,55 L130,55 L130,10 L133,5 L136,10 L136,55 L155,55 L155,45 L160,40 L165,45 L165,55 L180,55 L180,40 L190,20 L195,25 L200,15 L205,25 L210,20 L220,40 L220,55 L235,55 L235,35 L240,30 L245,35 L245,55 L260,55 L260,80 Z' fill='rgba(212,175,55,0.04)'/%3E%3C/svg%3E") no-repeat bottom center;
+  background-size: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sidebar-header > * { position: relative; z-index: 1; }
+
+.sidebar-logo {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--clr-accent), #E8C547);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: var(--clr-sidebar);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+}
+
+.sidebar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #F5F0E6;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sidebar-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-sidebar-text);
+  opacity: 0.5;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.sidebar-user-select {
+  padding: 0 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-user-select .form-select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #F5F0E6;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+}
+
+.sidebar-user-select .form-select:focus {
+  box-shadow: 0 0 0 2px rgba(212,175,55,0.3);
+  border-color: var(--clr-accent);
+}
+
+.sidebar-user-select .form-select option { color: #333; background: #fff; }
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.sidebar-nav li { margin-bottom: 2px; }
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  color: var(--clr-sidebar-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.sidebar-nav .nav-link:hover {
+  background: rgba(212, 175, 55, 0.08);
+  color: #F5F0E6;
+}
+
+.sidebar-nav .nav-link.active {
+  background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.08));
+  color: var(--clr-accent);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--clr-accent);
+}
+
+.sidebar-nav .nav-link i { font-size: 1.1rem; width: 22px; text-align: center; }
+
+.sidebar-footer {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  text-align: center;
+}
+
+.sidebar-footer small { color: var(--clr-sidebar-text); opacity: 0.35; font-size: 0.72rem; }
+
+/* ─── MOBILE HEADER ──────────────────────────────── */
+
+.mobile-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  min-height: 56px;
+  background: linear-gradient(135deg, var(--clr-sidebar), var(--clr-sidebar-deep));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  padding-top: env(safe-area-inset-top);
+  z-index: 999;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.15);
+}
+
+.mobile-header .btn-link { color: var(--clr-accent); text-decoration: none; }
+.mobile-title { color: #F5F0E6; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; }
+.mobile-user { color: var(--clr-accent); font-size: 1.3rem; }
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 42, 74, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+.sidebar-overlay.show { display: block; }
+
+/* ─── MOBILE BOTTOM TAB BAR ──────────────────────── */
+
+.mobile-tab-bar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--mobile-tab-height);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: linear-gradient(180deg, var(--clr-sidebar-deep), var(--clr-sidebar));
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  z-index: 998;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.mobile-tab-bar::-webkit-scrollbar { display: none; }
+
+.mobile-tab-bar-inner {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  min-width: max-content;
+  padding: 0 0.25rem;
+}
+
+.mobile-tab-bar .tab-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.3rem 0.75rem;
+  color: var(--clr-sidebar-text);
+  text-decoration: none;
+  font-size: 0.58rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.mobile-tab-bar .tab-link i { font-size: 1.15rem; }
+
+.mobile-tab-bar .tab-link.active {
+  color: var(--clr-accent);
+  opacity: 1;
+}
+
+.mobile-tab-bar .tab-link.active::after {
+  content: '';
+  display: block;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  margin-top: 1px;
+  box-shadow: 0 0 6px rgba(212,175,55,0.5);
+}
+
+.mobile-tab-bar .tab-link:hover {
+  color: var(--clr-accent);
+  opacity: 1;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    z-index: 1001;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: calc(72px + env(safe-area-inset-top)) 1rem calc(2rem + var(--mobile-tab-height) + env(safe-area-inset-bottom));
+  }
+  .mobile-tab-bar {
+    display: block;
+  }
+}
+
+/* ─── PAGE HEADER ─────────────────────────────────── */
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.page-header p {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ─── BENTO GRID (Dashboard) ─────────────────────── */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.15rem;
+}
+
+.bento-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✨ Golden glow hover */
+.bento-card:hover {
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(212,175,55,0.02), rgba(212,175,55,0.07));
+}
+
+.bento-card:hover::after { opacity: 1; }
+
+.bento-card.span-2 { grid-column: span 2; }
+
+.bento-icon {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.bento-icon.orange { background: var(--clr-accent-light); color: var(--clr-accent); }
+.bento-icon.green { background: #E8F5EC; color: var(--clr-success); }
+.bento-icon.blue { background: #EDE8FC; color: var(--clr-info); }
+.bento-icon.gold { background: #FFF5E0; color: var(--clr-warning); }
+.bento-icon.red { background: #FCE8E6; color: var(--clr-danger); }
+.bento-icon.purple { background: #EDE8FC; color: var(--clr-info); }
+
+.bento-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-muted);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.bento-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bento-list { list-style: none; padding: 0; margin: 0; }
+
+.bento-list li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--clr-border);
+  font-size: 0.88rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bento-list li:last-child { border-bottom: none; }
+
+.bento-list .event-date {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  background: var(--clr-surface-alt);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill);
+}
+
+/* ─── CARDS & PANELS ──────────────────────────────── */
+
+.hub-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.15rem;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.hub-card:hover { box-shadow: var(--shadow-md); }
+
+.hub-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.hub-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ─── BUTTONS — Pill Style with Gold Gradient ─────── */
+
+.btn-hub {
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-hover));
+  color: var(--clr-sidebar);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 1.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+}
+
+.btn-hub:hover {
+  background: linear-gradient(135deg, #E8C547, var(--clr-accent));
+  color: var(--clr-sidebar);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+}
+
+.btn-hub:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(212, 175, 55, 0.15);
+}
+
+.btn-hub-outline {
+  background: transparent;
+  color: var(--clr-accent);
+  border: 1.5px solid var(--clr-accent);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-hub-outline:hover {
+  background: var(--clr-accent-light);
+  border-color: var(--clr-accent-hover);
+}
+
+.btn-hub-outline:active { transform: scale(0.95); }
+
+.btn-hub-sm {
+  padding: 0.3rem 0.85rem;
+  font-size: 0.78rem;
+}
+
+.btn-hub-success {
+  background: linear-gradient(135deg, var(--clr-success), #248F5C);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(46, 125, 91, 0.2);
+}
+.btn-hub-success:hover { background: linear-gradient(135deg, #248F5C, var(--clr-success)); color: #fff; }
+
+.btn-hub-danger {
+  background: linear-gradient(135deg, var(--clr-danger), #A83224);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
+}
+.btn-hub-danger:hover { background: linear-gradient(135deg, #A83224, var(--clr-danger)); color: #fff; }
+
+.btn-hub-warning {
+  background: linear-gradient(135deg, var(--clr-warning), #B38826);
+  color: #fff;
+}
+
+/* ─── FORMS ───────────────────────────────────────── */
+
+.hub-form .form-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.hub-form .form-control,
+.hub-form .form-select {
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--clr-surface);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.hub-form .form-control:focus,
+.hub-form .form-select:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+}
+
+/* ─── PROGRESS BAR ────────────────────────────────── */
+
+.quest-progress {
+  height: 10px;
+  background: var(--clr-surface-alt);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.quest-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--clr-accent), #E8C547);
+  border-radius: var(--radius-pill);
+  transition: width 0.6s ease;
+}
+
+/* ─── STATUS BADGES ───────────────────────────────── */
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-voting { background: #FFF5E0; color: var(--clr-warning); }
+.status-decided { background: #E8F5EC; color: var(--clr-success); }
+.status-proposed { background: #EDE8FC; color: var(--clr-info); }
+.status-accepted { background: var(--clr-accent-light); color: var(--clr-accent-hover); }
+.status-completed { background: #E8F5EC; color: var(--clr-success); }
+.status-forfeited { background: #FCE8E6; color: var(--clr-danger); }
+.status-denied { background: #F0E0E0; color: #8B4040; }
+.status-counter { background: #EDE8FC; color: var(--clr-info); }
+.status-pending { background: #FFF5E0; color: var(--clr-warning); }
+.status-paid { background: #E8F5EC; color: var(--clr-success); }
+
+/* ─── CALENDAR GRID ───────────────────────────────── */
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-header-cell {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.5rem;
+}
+
+.cal-cell {
+  min-height: 80px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem;
+  position: relative;
+  transition: background 0.15s, border-color 0.2s;
+}
+
+.cal-cell:hover { background: var(--clr-surface-alt); border-color: rgba(212,175,55,0.2); }
+.cal-cell.today { border-color: var(--clr-accent); border-width: 2px; background: var(--clr-accent-light); }
+.cal-cell.empty { background: transparent; border-color: transparent; }
+
+.cal-day-num {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  padding: 0.15rem 0.3rem;
+}
+
+.cal-cell.today .cal-day-num {
+  background: linear-gradient(135deg, var(--clr-accent), #E8C547);
+  color: var(--clr-sidebar);
+  border-radius: 50%;
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(212,175,55,0.3);
+}
+
+.cal-event {
+  font-size: 0.68rem;
+  background: var(--clr-accent-light);
+  color: var(--clr-accent-hover);
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ─── FRIDGE NOTES ────────────────────────────────── */
+
+.fridge-note {
+  background: linear-gradient(135deg, #FFFDE7, #FFF8E1);
+  border: 1px solid #EDE5B7;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+  box-shadow: 1px 2px 8px rgba(200,180,100,0.1);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.fridge-note:hover {
+  transform: rotate(-0.5deg);
+  box-shadow: 2px 4px 12px rgba(200,180,100,0.18);
+}
+.fridge-note.pinned { border-left: 4px solid var(--clr-accent); }
+
+.fridge-note-author {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--clr-accent-hover);
+}
+
+.fridge-note-time {
+  font-size: 0.7rem;
+  color: var(--clr-text-muted);
+}
+
+.fridge-note-msg {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.fridge-note-actions {
+  position: absolute;
+  top: 0.5rem; right: 0.5rem;
+  display: flex; gap: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.fridge-note:hover .fridge-note-actions { opacity: 1; }
+
+/* ─── QUEST CARD ──────────────────────────────────── */
+
+.quest-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 0.85rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.quest-card:hover {
+  box-shadow: var(--shadow-gold);
+  border-color: rgba(212,175,55,0.25);
+  transform: translateY(-3px);
+}
+
+.quest-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.quest-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.quest-meta {
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+}
+
+.quest-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--clr-success);
+}
+
+.quest-price.counter {
+  text-decoration: line-through;
+  color: var(--clr-text-muted);
+  font-size: 0.95rem;
+  margin-right: 0.5rem;
+}
+
+.quest-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ─── MEAL POLL ───────────────────────────────────── */
+
+.meal-option {
+  background: var(--clr-surface-alt);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+.meal-option:hover { border-color: var(--clr-accent); background: var(--clr-accent-light); }
+.meal-option.voted { border-color: var(--clr-accent); background: var(--clr-accent-light); }
+
+.meal-option-name { font-weight: 600; font-size: 0.92rem; }
+
+.meal-vote-count {
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+  background: var(--clr-surface);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+/* ─── TABLES ──────────────────────────────────────── */
+
+.hub-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.hub-table thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--clr-border);
+  text-align: left;
+}
+
+.hub-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--clr-border);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+.hub-table tbody tr:hover { background: var(--clr-accent-light); }
+
+/* ─── EMPTY STATE ─────────────────────────────────── */
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--clr-text-muted);
+}
+
+.empty-state i {
+  font-size: 2.8rem;
+  opacity: 0.3;
+  margin-bottom: 0.75rem;
+  color: var(--clr-accent);
+}
+
+.empty-state p {
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* ─── LOADING SPINNER — ✨ Enchanted Star ────────── */
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.loading-spinner::after {
+  content: '✦';
+  font-size: 1.6rem;
+  color: var(--clr-accent);
+  animation: sparkle-spin 1.2s ease-in-out infinite;
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+@keyframes sparkle-spin {
+  0% { transform: rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: rotate(180deg) scale(1.3); opacity: 0.6; }
+  100% { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* ─── MODALS — Parchment Style ───────────────────── */
+
+.modal-content {
+  border-radius: var(--radius);
+  border: none;
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(180deg, #FFFBF0 0%, var(--clr-surface) 15%);
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--clr-accent), #E8C547, var(--clr-accent));
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(212,175,55,0.15);
+  padding: 1.15rem 1.5rem;
+  background: transparent;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.modal-body { padding: 1.5rem; }
+
+.modal-footer {
+  border-top: 1px solid rgba(212,175,55,0.12);
+  padding: 1rem 1.5rem;
+  background: rgba(253, 248, 239, 0.5);
+}
+
+/* ─── TOASTS — Enchanted Style ───────────────────── */
+
+.hub-toast {
+  background: var(--clr-sidebar);
+  color: var(--clr-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: toastIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border-left: 3px solid var(--clr-accent);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(30px) scale(0.95); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────── */
+
+@media (max-width: 991.98px) {
+  .bento-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .bento-card.span-2 { grid-column: span 1; }
+}
+
+@media (max-width: 575.98px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .cal-cell { min-height: 60px; }
+  .cal-event { font-size: 0.6rem; }
+}
+
+/* ─── WEEK AT A GLANCE ────────────────────────────── */
+
+.week-glance {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.week-glance-day {
+  min-width: 100px;
+  flex-shrink: 0;
+  background: var(--clr-surface-alt);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem;
+  text-align: center;
+  font-size: 0.82rem;
+  transition: border-color 0.2s;
+}
+
+.week-glance-day:hover { border-color: rgba(212,175,55,0.3); }
+
+.week-glance-day .day-label { font-weight: 700; font-size: 0.72rem; color: var(--clr-text-muted); text-transform: uppercase; }
+.week-glance-day .day-meal { margin-top: 0.3rem; font-weight: 600; }
+
+/* ─── VAULT / REGISTRY ───────────────────────────── */
+
+.vault-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--clr-border);
+  transition: background 0.15s;
+}
+
+.vault-item:hover { background: var(--clr-accent-light); }
+.vault-item:last-child { border-bottom: none; }
+
+.vault-category {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  background: var(--clr-surface-alt);
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+}
+
+.bucket-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.bucket-item:last-child { border-bottom: none; }
+
+.bucket-emoji {
+  font-size: 1.4rem;
+  width: 36px;
+  text-align: center;
+}
+
+.bucket-text { flex: 1; font-size: 0.92rem; }
+
+/* ─── GLOBAL SELECTION & LINK COLORS ─────────────── */
+
+::selection {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--clr-text);
+}
+
+a { color: var(--clr-accent-hover); }
+a:hover { color: var(--clr-accent); }
+
+/* ─── SCROLLBAR THEMING ──────────────────────────── */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212,175,55,0.35); }
+
+/* ─── UTILITY: Gold divider ──────────────────────── */
+
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--clr-accent), transparent);
+  margin: 1rem 0;
+  border: none;
+}
+</style>
+
+</head>
+<body>
+
+  <!-- USER SWITCHER -->
+  <input type="hidden" id="currentUser" value="Anthony">
+
+  <!-- LAYOUT WRAPPER -->
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="bi bi-stars"></i>
+        </div>
+        <h1 class="sidebar-title">Le'Fam Central</h1>
+      </div>
+
+      <div class="sidebar-user-select">
+        <label class="sidebar-label">Viewing as</label>
+        <select id="userSelect" class="form-select form-select-sm" onchange="switchUser(this.value)">
+          <option value="Anthony">Anthony</option>
+          <option value="Dad">Dad</option>
+          <option value="Mom">Mom</option>
+          <option value="Riah">Riah</option>
+          <option value="Erike">Erike</option>
+          <option value="Adriana">Adriana</option>
+        </select>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <a href="#" class="nav-link active" data-page="dashboard" onclick="navigate('dashboard', this)">
+            <i class="bi bi-building"></i><span>Main Street</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="calendar" onclick="navigate('calendar', this)">
+            <i class="bi bi-crown-fill"></i><span>Royal Timeline</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="fridge" onclick="navigate('fridge', this)">
+            <i class="bi bi-stars"></i><span>Enchanted Echoes</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="meals" onclick="navigate('meals', this)">
+            <i class="bi bi-egg-fried"></i><span>Meal Board</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="familyVote" onclick="navigate('familyVote', this)">
+            <i class="bi bi-shield-fill"></i><span>The Round Table</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="quests" onclick="navigate('quests', this)">
+            <i class="bi bi-lightning-charge-fill"></i><span>Quests</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="questReview" onclick="navigate('questReview', this)">
+            <i class="bi bi-journal-check"></i><span>Quest Review</span>
+          </a>
+        </li>
+        <li id="billsNavItem">
+          <a href="#" class="nav-link" data-page="bills" onclick="navigate('bills', this)">
+            <i class="bi bi-flag-fill"></i><span>Chamber of Debt</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-page="registry" onclick="navigate('registry', this)">
+            <i class="bi bi-gift-fill"></i><span>The Wishing Well</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <small class="text-muted">Le'Fam Central v2.0 \u2726</small>
+      </div>
+    </nav>
+
+    <!-- MOBILE HEADER -->
+    <header class="mobile-header d-lg-none">
+      <button class="btn btn-link" onclick="toggleSidebar()">
+        <i class="bi bi-list fs-4"></i>
+      </button>
+      <span class="mobile-title">Le'Fam Central \u2726</span>
+      <div class="mobile-user">
+        <i class="bi bi-person-circle"></i>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+      <div id="page-dashboard" class="page-content active"></div>
+      <div id="page-calendar" class="page-content"></div>
+      <div id="page-fridge" class="page-content"></div>
+      <div id="page-meals" class="page-content"></div>
+      <div id="page-quests" class="page-content"></div>
+      <div id="page-questReview" class="page-content"></div>
+      <div id="page-bills" class="page-content"></div>
+      <div id="page-familyVote" class="page-content"></div>
+      <div id="page-registry" class="page-content"></div>
+    </main>
+  </div>
+
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay d-lg-none" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- MOBILE BOTTOM TAB BAR -->
+  <nav class="mobile-tab-bar d-lg-none" id="mobileTabBar">
+    <div class="mobile-tab-bar-inner">
+      <a href="#" class="tab-link active" data-page="dashboard" onclick="navigate('dashboard', this); syncTabs(this);">
+        <i class="bi bi-building"></i><span>Main St.</span>
+      </a>
+      <a href="#" class="tab-link" data-page="calendar" onclick="navigate('calendar', this); syncTabs(this);">
+        <i class="bi bi-crown-fill"></i><span>Timeline</span>
+      </a>
+      <a href="#" class="tab-link" data-page="fridge" onclick="navigate('fridge', this); syncTabs(this);">
+        <i class="bi bi-stars"></i><span>Echoes</span>
+      </a>
+      <a href="#" class="tab-link" data-page="meals" onclick="navigate('meals', this); syncTabs(this);">
+        <i class="bi bi-egg-fried"></i><span>Meals</span>
+      </a>
+      <a href="#" class="tab-link" data-page="familyVote" onclick="navigate('familyVote', this); syncTabs(this);">
+        <i class="bi bi-shield-fill"></i><span>Vote</span>
+      </a>
+      <a href="#" class="tab-link" data-page="quests" onclick="navigate('quests', this); syncTabs(this);">
+        <i class="bi bi-lightning-charge-fill"></i><span>Quests</span>
+      </a>
+      <a href="#" class="tab-link" data-page="bills" onclick="navigate('bills', this); syncTabs(this);">
+        <i class="bi bi-flag-fill"></i><span>Debt</span>
+      </a>
+      <a href="#" class="tab-link" data-page="registry" onclick="navigate('registry', this); syncTabs(this);">
+        <i class="bi bi-gift-fill"></i><span>Wishes</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Toast container -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+// ============================================================
+// FAMILY HUB - Client-Side JavaScript
+// ============================================================
+
+let currentUser = 'Anthony';
+const QUEST_DOER = 'Adriana';
+const BILL_VIEWERS = ['Anthony', 'Dad', 'Mom', 'Riah', 'Erike'];
+
+// ─── NAVIGATION ──────────────────────────────────────────────
+
+function navigate(page, linkEl) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.sidebar-nav .nav-link').forEach(l => l.classList.remove('active'));
+  if (linkEl) {
+    linkEl.classList.add('active');
+  } else {
+    const navLink = document.querySelector(`.sidebar-nav .nav-link[data-page="${page}"]`);
+    if (navLink) navLink.classList.add('active');
+  }
+
+  loadPage(page);
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+function loadPage(page) {
+  const loaders = {
+    dashboard: loadDashboard, 
+    calendar: loadCalendar, 
+    fridge: loadFridge,
+    meals: loadMeals, 
+    quests: loadQuests, 
+    questReview: loadQuestReview,
+    bills: loadBills, 
+    registry: loadRegistry, // Corrected to use loadRegistry
+    familyVote: loadFamilyVote
+  };
+  if (loaders[page]) loaders[page]();
+}
+
+function switchUser(user) {
+  currentUser = user;
+  document.getElementById('currentUser').value = user;
+  applyUserPermissions(user);
+  const activePage = document.querySelector('.page-content.active');
+  if (activePage) loadPage(activePage.id.replace('page-', ''));
+}
+
+function applyUserPermissions(user) {
+  const billsNav = document.getElementById('billsNavItem');
+  if (billsNav) billsNav.style.display = BILL_VIEWERS.includes(user) ? '' : 'none';
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────
+
+function showToast(message, type) {
+  const icons = { success: 'bi-check-circle-fill', error: 'bi-x-circle-fill', info: 'bi-info-circle-fill' };
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'hub-toast';
+  toast.innerHTML = '<i class="bi ' + (icons[type] || icons.info) + '"></i> ' + message;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  
+  // If the date string contains a colon (:), it's a full timestamp (e.g. 2025-02-07 14:30)
+  // We can just parse it directly.
+  if (dateStr.indexOf(':') !== -1) {
+    // Replace space with T for better browser compatibility (Safari/iOS) if needed, 
+    // or just let Date parse it if standard.
+    const cleanStr = dateStr.replace(' ', 'T'); 
+    return new Date(cleanStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+  
+  // If it's just a date (2025-02-07), append T00:00:00 to ensure it treats it as Local Time
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function relativeTime(dateStr) {
+  if (!dateStr) return '';
+  const diff = Math.floor((new Date() - new Date(dateStr)) / 60000);
+  if (diff < 1) return 'Just now';
+  if (diff < 60) return diff + 'm ago';
+  if (diff < 1440) return Math.floor(diff / 60) + 'h ago';
+  return Math.floor(diff / 1440) + 'd ago';
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+const GAS_API_URL = 'YOUR_DEPLOYMENT_URL_HERE';
+
+function runServer(fn) {
+  const args = Array.prototype.slice.call(arguments, 1);
+  return fetch(GAS_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action: fn, args: args })
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    return data.data;
+  });
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────
+
+async function loadDashboard() {
+  const container = document.getElementById('page-dashboard');
+  const h = new Date().getHours();
+  const greeting = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+
+  container.innerHTML =
+    '<div class="page-header">' +
+      '<h2>Welcome to Main Street, ' + currentUser + ' \u2728</h2>' +
+      '<p>Your enchanted family overview</p>' +
+    '</div>' +
+    '<div class="bento-grid" id="dashGrid"><div class="loading-spinner" style="grid-column:span 3;"></div></div>';
+
+  try {
+    const data = await runServer('getDashboardData', currentUser);
+    renderDashboard(data);
+  } catch (e) {
+    document.getElementById('dashGrid').innerHTML = '<p class="text-muted">Could not load dashboard</p>';
+  }
+}
+
+function renderDashboard(data) {
+  const grid = document.getElementById('dashGrid');
+
+  var eventsHtml = '';
+  if (data.upcomingEvents && data.upcomingEvents.length > 0) {
+    eventsHtml = '<ul class="bento-list">' + data.upcomingEvents.map(function(e) {
+      return '<li><span>' + escapeHtml(e.Title) + '</span><span class="event-date">' + formatDate(e.Date) + '</span></li>';
+    }).join('') + '</ul>';
+  } else {
+    eventsHtml = '<p class="text-muted" style="font-size:0.85rem;">No upcoming events</p>';
+  }
+
+  var mealHtml = '';
+  if (data.mealStatus) {
+    if (data.mealStatus.Status === 'Decided') {
+      mealHtml = '<div class="bento-value" style="font-size:1.2rem;">' + escapeHtml(data.mealStatus.Winner) + '</div><span class="status-badge status-decided">Decided</span>';
+    } else {
+      mealHtml = '<span class="status-badge status-voting">Voting Open</span><p style="font-size:0.85rem;margin-top:0.5rem;">Check Active Polls below!</p>';
+    }
+  } else {
+    mealHtml = '<p class="text-muted" style="font-size:0.85rem;">No meal plan for today</p>';
+  }
+
+  var pollsHtml = '';
+  if (data.activePolls && data.activePolls.length > 0) {
+    pollsHtml = '<ul class="bento-list">' + data.activePolls.map(function(p) {
+      var icon = p.Type === 'Meal' ? '<i class="bi bi-egg-fried" style="color:var(--clr-accent);"></i>' : '<i class="bi bi-chat-quote" style="color:var(--clr-info);"></i>';
+      return '<li style="cursor:pointer;" onclick="navigate(\'' + p.Page + '\')"><div style="display:flex;align-items:center;gap:0.5rem;">' + icon + ' <div><strong>' + escapeHtml(p.Title) + '</strong><br><small class="text-muted">' + escapeHtml(p.Subtitle) + '</small></div></div><i class="bi bi-chevron-right text-muted" style="font-size:0.8rem;"></i></li>';
+    }).join('') + '</ul>';
+  } else {
+    pollsHtml = '<p class="text-muted" style="font-size:0.85rem;">No active polls.</p>';
+  }
+
+  var qp = data.questProgress || { completed: 0, total: 0 };
+  var pct = qp.total > 0 ? Math.round((qp.completed / qp.total) * 100) : 0;
+
+  var notesHtml = (data.recentNotes && data.recentNotes.length) ? data.recentNotes.map(n => '<div style="margin-bottom:0.3rem;font-size:0.8rem;"><b>' + escapeHtml(n.Author) + ':</b> ' + escapeHtml(n.Message) + '</div>').join('') : '<p class="text-muted small">Empty fridge</p>';
+  var bucketHtml = data.bucketInspiration ? '<div style="font-size:1rem;font-weight:600;">' + escapeHtml(data.bucketInspiration.Label) + '</div>' : '<p class="text-muted small">Dream big!</p>';
+
+  grid.innerHTML =
+    '<div class="bento-card span-2" style="cursor:pointer;" onclick="navigate(\'calendar\')">' +
+      '<div class="bento-icon orange"><i class="bi bi-calendar3"></i></div>' +
+      '<div class="bento-label">Coming Up</div>' + eventsHtml +
+    '</div>' +
+    '<div class="bento-card" style="cursor:pointer;" onclick="navigate(\'meals\')">' +
+      '<div class="bento-icon green"><i class="bi bi-egg-fried"></i></div>' +
+      '<div class="bento-label">Tonight\'s Dinner</div>' + mealHtml +
+    '</div>' +
+    '<div class="bento-card span-2">' +
+      '<div class="bento-icon green"><i class="bi bi-check2-circle"></i></div>' +
+      '<div class="bento-label">Active Polls</div>' + pollsHtml +
+    '</div>' +
+    '<div class="bento-card" style="cursor:pointer;" onclick="navigate(\'quests\')">' +
+      '<div class="bento-icon blue"><i class="bi bi-lightning-charge-fill"></i></div>' +
+      '<div class="bento-label">Weekly Quests</div>' +
+      '<div class="bento-value">' + qp.completed + ' / ' + qp.total + '</div>' +
+      '<div class="quest-progress"><div class="quest-progress-fill" style="width:' + pct + '%"></div></div>' +
+    '</div>' +
+    '<div class="bento-card" style="cursor:pointer;" onclick="navigate(\'questReview\')">' +
+      '<div class="bento-icon gold"><i class="bi bi-coin"></i></div>' +
+      '<div class="bento-label">' + QUEST_DOER + '\'s Earnings</div>' +
+      '<div class="bento-value">$' + (data.weeklyEarnings || 0).toFixed(2) + '</div>' +
+    '</div>' +
+    '<div class="bento-card" style="cursor:pointer;" onclick="navigate(\'fridge\')">' +
+      '<div class="bento-icon purple"><i class="bi bi-stickies-fill"></i></div>' +
+      '<div class="bento-label">Digital Fridge</div>' + notesHtml +
+    '</div>' +
+    '<div class="bento-card" style="cursor:pointer;" onclick="navigate(\'registry\')">' +
+      '<div class="bento-icon red"><i class="bi bi-rocket-takeoff-fill"></i></div>' +
+      '<div class="bento-label">Inspiration</div>' + bucketHtml +
+    '</div>';
+}
+
+// ─── CALENDAR ────────────────────────────────────────────────
+
+var calendarMonth = new Date().getMonth();
+var calendarYear = new Date().getFullYear();
+var calendarEvents = [];
+
+async function loadCalendar() {
+  var container = document.getElementById('page-calendar');
+  container.innerHTML =
+    '<div class="page-header"><h2>The Royal Timeline \uD83D\uDC51</h2><p>Your family\'s enchanted schedule</p></div>' +
+    '<div class="hub-card">' +
+      '<div class="hub-card-header">' +
+        '<div style="display:flex;align-items:center;gap:0.75rem;">' +
+          '<button class="btn-hub-outline btn-hub-sm" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>' +
+          '<h3 class="hub-card-title" id="calMonthLabel"></h3>' +
+          '<button class="btn-hub-outline btn-hub-sm" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>' +
+        '</div>' +
+        '<button class="btn-hub" onclick="showAddEventModal()"><i class="bi bi-plus-lg"></i> Add Event</button>' +
+      '</div>' +
+      '<div id="calGrid" class="cal-grid"></div>' +
+    '</div>' +
+    '<div class="modal fade" id="eventModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Add Event</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Title</label><input type="text" class="form-control" id="eventTitle" placeholder="e.g., Family BBQ"></div>' +
+        '<div class="row"><div class="col-7 mb-3"><label class="form-label">Date</label><input type="date" class="form-control" id="eventDate"></div><div class="col-5 mb-3"><label class="form-label">Time (opt.)</label><input type="time" class="form-control" id="eventTime"></div></div>' +
+        '<div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" id="eventDesc" rows="2"></textarea></div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="saveEvent()">Save Event</button></div>' +
+    '</div></div></div>' +
+
+    '<div class="modal fade" id="eventDetailModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title" id="eventDetailTitle"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body">' +
+        '<p id="eventDetailDesc" style="font-size:0.9rem;color:var(--clr-text-muted);margin:0 0 0.5rem;"></p>' +
+        '<div style="font-size:0.78rem;color:var(--clr-text-muted);">' +
+          '<span id="eventDetailTime"></span>' +
+          '<span id="eventDetailCreator"></span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer" id="eventDetailFooter"></div>' +
+    '</div></div></div>';
+
+  try {
+    calendarEvents = await runServer('getCalendarEvents');
+    renderCalendar();
+  } catch (e) {
+    document.getElementById('calGrid').innerHTML = '<p class="text-muted">Could not load calendar</p>';
+  }
+}
+
+function changeMonth(delta) {
+  calendarMonth += delta;
+  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+  if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent = monthNames[calendarMonth] + ' ' + calendarYear;
+  
+  var firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+  var daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  var today = new Date();
+  var dayHeaders = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  
+  var html = dayHeaders.map(function(d) { return '<div class="cal-header-cell">' + d + '</div>'; }).join('');
+  
+  for (var i = 0; i < firstDay; i++) html += '<div class="cal-cell empty"></div>';
+  
+  for (var day = 1; day <= daysInMonth; day++) {
+    var dateStr = calendarYear + '-' + String(calendarMonth + 1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+    var isToday = today.getDate() === day && today.getMonth() === calendarMonth && today.getFullYear() === calendarYear;
+    var dayEvents = calendarEvents.filter(function(e) { return e.Date === dateStr; });
+    
+    html += '<div class="cal-cell ' + (isToday ? 'today' : '') + '" onclick="showAddEventModal(\'' + dateStr + '\')" style="cursor:pointer;">' +
+            '<div class="cal-day-num">' + day + '</div>';
+            
+    dayEvents.forEach(function(e) { 
+      html += '<div class="cal-event" title="' + escapeHtml(e.Title) + '" onclick="event.stopPropagation(); showEventDetail(\'' + e.ID + '\')">' + escapeHtml(e.Title) + '</div>'; 
+    });
+    
+    html += '</div>';
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function showAddEventModal(dateStr) {
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventDate').value = dateStr || '';
+  document.getElementById('eventTime').value = '';
+  document.getElementById('eventDesc').value = '';
+  new bootstrap.Modal(document.getElementById('eventModal')).show();
+}
+
+async function saveEvent() {
+  var title = document.getElementById('eventTitle').value.trim();
+  var date = document.getElementById('eventDate').value;
+  var time = document.getElementById('eventTime').value;
+  var desc = document.getElementById('eventDesc').value.trim();
+  if (!title || !date) { showToast('Title and date required', 'error'); return; }
+  try {
+    await runServer('addCalendarEvent', title, date, time, desc, currentUser);
+    bootstrap.Modal.getInstance(document.getElementById('eventModal')).hide();
+    showToast('Event added!', 'success');
+    calendarEvents = await runServer('getCalendarEvents');
+    renderCalendar();
+  } catch (e) { showToast('Failed to add event', 'error'); }
+}
+
+function showEventDetail(eventId) {
+  var evt = calendarEvents.find(function(e) { return e.ID === eventId; });
+  if (!evt) return;
+
+  document.getElementById('eventDetailTitle').textContent = evt.Title || 'Untitled';
+  document.getElementById('eventDetailDesc').textContent = evt.Description || 'No details';
+  document.getElementById('eventDetailTime').textContent = evt.Time ? 'Time: ' + evt.Time + '  · ' : '';
+  document.getElementById('eventDetailCreator').textContent = 'Added by ' + (evt.CreatedBy || 'Unknown');
+
+  var isCreator = evt.CreatedBy === currentUser || currentUser === 'Anthony';
+  var footer = document.getElementById('eventDetailFooter');
+  footer.innerHTML = isCreator ?
+    '<button class="btn-hub-outline btn-hub-sm" style="color:var(--clr-danger);border-color:var(--clr-danger);" onclick="deleteCalEvent(\'' + eventId + '\')"><i class="bi bi-trash3-fill"></i> Delete Event</button>' : '';
+
+  new bootstrap.Modal(document.getElementById('eventDetailModal')).show();
+}
+
+async function deleteCalEvent(eventId) {
+  if (!confirm('Delete this event?')) return;
+  try {
+    var result = await runServer('deleteCalendarEvent', eventId, currentUser);
+    if (result.success) {
+      bootstrap.Modal.getInstance(document.getElementById('eventDetailModal')).hide();
+      showToast('Event deleted', 'success');
+      calendarEvents = await runServer('getCalendarEvents');
+      renderCalendar();
+    } else {
+      showToast(result.error || 'Could not delete', 'error');
+    }
+  } catch (e) { showToast('Failed to delete event', 'error'); }
+}
+
+// ─── DIGITAL FRIDGE ──────────────────────────────────────────
+
+async function loadFridge() {
+  var container = document.getElementById('page-fridge');
+  container.innerHTML =
+    '<div class="page-header"><h2>Enchanted Echoes \u2728</h2><p>Magical notes and whispers for the family</p></div>' +
+    '<div class="hub-card">' +
+      '<div class="hub-form" style="display:flex;gap:0.75rem;margin-bottom:1.25rem;">' +
+        '<input type="text" class="form-control" id="fridgeInput" placeholder="Leave a note for the family..." onkeydown="if(event.key===\'Enter\')postNote()">' +
+        '<button class="btn-hub" onclick="postNote()" style="white-space:nowrap;"><i class="bi bi-send-fill"></i> Post</button>' +
+      '</div>' +
+      '<div id="fridgeNotes"><div class="loading-spinner"></div></div>' +
+    '</div>';
+
+  try {
+    var notes = await runServer('getFridgeNotes');
+    renderFridgeNotes(notes);
+  } catch (e) {
+    document.getElementById('fridgeNotes').innerHTML = '<p class="text-muted">Could not load notes</p>';
+  }
+}
+
+function renderFridgeNotes(notes) {
+  var container = document.getElementById('fridgeNotes');
+  if (!notes || notes.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="bi bi-stickies"></i><p>No notes yet. Be the first!</p></div>';
+    return;
+  }
+  container.innerHTML = notes.map(function(n) {
+    var isCreator = n.Author === currentUser || currentUser === 'Anthony';
+    var deleteBtn = isCreator ?
+      '<button class="btn-hub-outline btn-hub-sm" onclick="removeNote(\'' + n.ID + '\')" title="Delete"><i class="bi bi-trash3"></i></button>' : '';
+    return '<div class="fridge-note ' + (n.Pinned ? 'pinned' : '') + '">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+        '<span class="fridge-note-author">' + escapeHtml(n.Author) + (n.Pinned ? ' \uD83D\uDCCC' : '') + '</span>' +
+        '<span class="fridge-note-time">' + relativeTime(n.Timestamp) + '</span>' +
+      '</div>' +
+      '<div class="fridge-note-msg">' + escapeHtml(n.Message) + '</div>' +
+      '<div class="fridge-note-actions">' +
+        '<button class="btn-hub-outline btn-hub-sm" onclick="pinNote(\'' + n.ID + '\')" title="Pin"><i class="bi bi-pin-fill"></i></button>' +
+        deleteBtn +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function postNote() {
+  var input = document.getElementById('fridgeInput');
+  var msg = input.value.trim();
+  if (!msg) return;
+  try {
+    await runServer('addFridgeNote', currentUser, msg);
+    input.value = '';
+    showToast('Note posted!', 'success');
+    var notes = await runServer('getFridgeNotes');
+    renderFridgeNotes(notes);
+  } catch (e) { showToast('Failed to post note', 'error'); }
+}
+
+async function pinNote(id) {
+  try { await runServer('togglePinNote', id); var notes = await runServer('getFridgeNotes'); renderFridgeNotes(notes); } catch (e) {}
+}
+
+async function removeNote(id) {
+  if (!confirm('Delete this note?')) return;
+  try {
+    var result = await runServer('deleteFridgeNote', id, currentUser);
+    if (result.success) {
+      var notes = await runServer('getFridgeNotes');
+      renderFridgeNotes(notes);
+      showToast('Note deleted', 'success');
+    } else {
+      showToast(result.error || 'Could not delete', 'error');
+    }
+  } catch (e) { showToast('Failed to delete', 'error'); }
+}
+
+// ─── MEAL BOARD ──────────────────────────────────────────────
+
+async function loadMeals() {
+  var container = document.getElementById('page-meals');
+  const isParent = ['Mom', 'Dad', 'Anthony'].includes(currentUser); 
+  const buttonsHtml = isParent ? 
+    '<div style="display:flex;gap:0.5rem;">' +
+      '<button class="btn-hub" onclick="showMealPollModal()"><i class="bi bi-plus-lg"></i> Poll</button>' +
+      '<button class="btn-hub btn-hub-success" onclick="showDirectMealModal()"><i class="bi bi-check-lg"></i> Post Dinner</button>' +
+    '</div>' : '';
+
+  container.innerHTML =
+    '<div class="page-header"><h2>The Feast Hall \uD83C\uDF7D</h2><p>Plan and vote on family dinners</p></div>' +
+    '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Active Polls</h3>' + buttonsHtml + '</div><div id="mealPolls"><div class="loading-spinner"></div></div></div>' +
+    
+    '<div class="modal fade" id="mealModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Create Meal Poll</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control" id="mealDate"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 1</label><input type="text" class="form-control" id="mealOpt1"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 2</label><input type="text" class="form-control" id="mealOpt2"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 3 (Optional)</label><input type="text" class="form-control" id="mealOpt3" placeholder="Optional"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 4 (Optional)</label><input type="text" class="form-control" id="mealOpt4" placeholder="Optional"></div>' +
+        '<div class="mb-3"><label class="form-label">Voting Ends</label>' +
+          '<select class="form-select" id="mealExpiryType" onchange="toggleMealExpiryInputs()" style="width:auto;">' +
+            '<option value="hours">Hours from now</option>' +
+            '<option value="day">Until end of day</option>' +
+          '</select>' +
+          '<div id="mealExpiryHoursWrap" style="margin-top:0.5rem;"><select class="form-select" id="mealExpiryHours" style="width:auto;">' +
+            (function(){ var opts = ''; for (var h = 1; h <= 24; h++) opts += '<option value="' + h + '">' + h + ' hour' + (h>1?'s':'') + '</option>'; return opts; })() +
+          '</select></div>' +
+          '<div id="mealExpiryDayWrap" style="margin-top:0.5rem;display:none;"><select class="form-select" id="mealExpiryDay" style="width:auto;">' +
+            (function(){ var opts = ''; var now = new Date(); for (var i = 0; i < 7; i++) { var d = new Date(now.getTime() + i*86400000); var label = i===0?'Today':i===1?'Tomorrow':d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}); opts += '<option value="' + i + '">' + label + '</option>'; } return opts; })() +
+          '</select></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="createMealPoll()">Start Vote</button></div>' +
+    '</div></div></div>' +
+
+    '<div class="modal fade" id="directMealModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Post Dinner (No Vote)</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control" id="directMealDate"></div>' +
+        '<div class="mb-3"><label class="form-label">What are we eating?</label><input type="text" class="form-control" id="directMealName" placeholder="e.g. Lasagna"></div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="createDirectMeal()">Post Dinner</button></div>' +
+    '</div></div></div>';
+
+  try {
+    var polls = await runServer('getMealPolls');
+    renderMealPolls(polls);
+  } catch (e) { document.getElementById('mealPolls').innerHTML = '<p class="text-muted">Could not load meals</p>'; }
+}
+
+function showMealPollModal() { new bootstrap.Modal(document.getElementById('mealModal')).show(); toggleMealExpiryInputs(); }
+function showDirectMealModal() { new bootstrap.Modal(document.getElementById('directMealModal')).show(); }
+
+function toggleMealExpiryInputs() {
+  var type = document.getElementById('mealExpiryType').value;
+  document.getElementById('mealExpiryHoursWrap').style.display = type === 'hours' ? '' : 'none';
+  document.getElementById('mealExpiryDayWrap').style.display = type === 'day' ? '' : 'none';
+}
+
+function calculateMealExpiresAt() {
+  var type = document.getElementById('mealExpiryType').value;
+  if (type === 'hours') {
+    var h = parseInt(document.getElementById('mealExpiryHours').value) || 1;
+    return new Date(Date.now() + h * 3600000).toISOString();
+  } else {
+    var daysOut = parseInt(document.getElementById('mealExpiryDay').value) || 0;
+    var d = new Date();
+    d.setDate(d.getDate() + daysOut);
+    d.setHours(23, 59, 59, 0);
+    return d.toISOString();
+  }
+}
+
+async function createDirectMeal() {
+  var date = document.getElementById('directMealDate').value;
+  var name = document.getElementById('directMealName').value;
+  if(!date || !name) { showToast('Fill all fields','error'); return; }
+  try {
+    var result = await runServer('createDirectMeal', date, name, currentUser);
+    if (result.success) {
+      bootstrap.Modal.getInstance(document.getElementById('directMealModal')).hide();
+      showToast('Dinner posted!','success'); loadMeals();
+    } else {
+      showToast(result.error || 'Could not post dinner', 'error');
+    }
+  } catch(e) { showToast(e.message || 'Failed','error'); }
+}
+
+async function createMealPoll() {
+  var date = document.getElementById('mealDate').value;
+  var o1 = document.getElementById('mealOpt1').value;
+  var o2 = document.getElementById('mealOpt2').value;
+  var o3 = document.getElementById('mealOpt3').value;
+  var o4 = document.getElementById('mealOpt4').value;
+  if (!date || !o1 || !o2) { showToast('Date and first 2 options required', 'error'); return; }
+  var expiresAt = calculateMealExpiresAt();
+  try {
+    var result = await runServer('createMealPoll', date, o1, o2, o3, o4, currentUser, expiresAt);
+    if (result.success) {
+      bootstrap.Modal.getInstance(document.getElementById('mealModal')).hide();
+      showToast('Poll created!', 'success'); loadMeals();
+    } else {
+      showToast(result.error || 'Could not create poll', 'error');
+    }
+  } catch (e) { showToast('Failed to create poll', 'error'); }
+}
+
+async function voteMeal(pollId, optNum) {
+  try {
+    var result = await runServer('voteMeal', pollId, optNum, currentUser);
+    if (result.success) {
+      if (result.message) {
+        showToast(result.message, 'success');
+      } else {
+        showToast('Vote cast!', 'success');
+      }
+      loadMeals();
+    }
+    else showToast(result.error || 'Could not vote', 'error');
+  } catch (e) { showToast('Voting failed', 'error'); }
+}
+
+async function deleteMealPoll(pollId) {
+  if (!confirm('Are you sure you want to delete this poll?')) return;
+  try {
+    var result = await runServer('deleteMealPoll', pollId, currentUser);
+    if (result.success) { 
+      showToast('Poll deleted', 'success'); 
+      loadMeals(); 
+    } else { 
+      showToast(result.error, 'error'); 
+    }
+  } catch (e) { showToast('Failed to delete', 'error'); }
+}
+
+var mealPollTimer = null;
+
+function renderMealPolls(polls) {
+  var container = document.getElementById('mealPolls');
+  if (mealPollTimer) { clearInterval(mealPollTimer); mealPollTimer = null; }
+
+  var activePolls = polls.filter(function(p) { return p.Status === 'Voting'; });
+  var closedPolls = polls.filter(function(p) { return p.Status === 'Decided'; });
+
+  if (activePolls.length === 0 && closedPolls.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="bi bi-egg-fried"></i><p>No polls yet.</p></div>';
+    return;
+  }
+
+  // Active polls
+  var activeHtml = '';
+  if (activePolls.length === 0) {
+    activeHtml = '<p class="text-muted" style="font-size:0.9rem;">No active voting right now.</p>';
+  } else {
+    activeHtml = activePolls.map(function(p) {
+      var votes = [1,2,3,4].map(function(n) { var v = String(p['Votes' + n] || ''); return v ? v.split(',') : []; });
+      var hasVoted = false;
+      for (var vi = 0; vi < 4; vi++) { if (votes[vi].indexOf(currentUser) !== -1) { hasVoted = true; break; } }
+
+      var optionsHtml = [1,2,3,4].map(function(n) {
+        if (!p['Option' + n]) return '';
+        var voted = votes[n-1].indexOf(currentUser) !== -1;
+        var clickAttr = hasVoted ? '' : 'onclick="voteMeal(\'' + p.ID + '\', ' + n + ')"';
+        var disabledClass = hasVoted && !voted ? ' meal-option-disabled' : '';
+        return '<div class="meal-option ' + (voted ? 'voted' : '') + disabledClass + '" ' + clickAttr + '><span class="meal-option-name">' + escapeHtml(p['Option' + n]) + '</span><span class="meal-vote-count">' + votes[n-1].length + '</span></div>';
+      }).join('');
+
+      var countdown = getCountdownText(p.ExpiresAt);
+      var countdownHtml = countdown ? '<span class="meal-countdown" data-expires="' + escapeHtml(p.ExpiresAt) + '" style="font-size:0.78rem;color:var(--clr-text-muted);">' + countdown + '</span>' : '';
+
+      var isCreator = p.CreatedBy === currentUser || currentUser === 'Anthony';
+      var deleteBtn = isCreator ?
+        '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" onclick="deleteMealPoll(\'' + p.ID + '\')" title="Delete Poll"><i class="bi bi-trash3-fill"></i></button>' : '';
+
+      var actionsHtml = '';
+      if (deleteBtn || countdownHtml) {
+        actionsHtml = '<div style="margin-top:0.75rem; display:flex; gap:0.5rem; align-items:center;">' + countdownHtml + '<span style="flex:1;"></span>' + deleteBtn + '</div>';
+      }
+
+      return '<div style="margin-bottom:1.5rem;border-bottom:1px solid var(--clr-border);padding-bottom:1rem;"><h5>Dinner: ' + formatDate(p.Date) + '</h5>' + optionsHtml + actionsHtml + '</div>';
+    }).join('');
+
+    // Refresh countdowns every 60s
+    mealPollTimer = setInterval(function() {
+      var els = document.querySelectorAll('.meal-countdown');
+      els.forEach(function(el) {
+        el.textContent = getCountdownText(el.dataset.expires);
+      });
+    }, 60000);
+  }
+
+  // Past results
+  var closedHtml = '';
+  if (closedPolls.length > 0) {
+    closedHtml = '<div style="margin-top:2rem;"><h5 style="margin-bottom:1rem;color:var(--clr-text-muted);">Past Results</h5>' +
+      closedPolls.slice(-10).reverse().map(function(p) {
+        var isCreator = p.CreatedBy === currentUser || currentUser === 'Anthony';
+        var deleteBtn = isCreator ?
+          '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" onclick="deleteMealPoll(\'' + p.ID + '\')" title="Delete" style="margin-left:auto;"><i class="bi bi-trash3-fill"></i></button>' : '';
+
+        return '<div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid var(--clr-border);">' +
+          '<span style="font-size:0.85rem;color:var(--clr-text-muted);">' + formatDate(p.Date) + '</span>' +
+          '<strong style="color:var(--clr-accent);">' + escapeHtml(p.Winner) + '</strong>' +
+          deleteBtn +
+        '</div>';
+      }).join('') +
+    '</div>';
+  }
+
+  container.innerHTML = activeHtml + closedHtml;
+}
+
+// ─── QUESTS ──────────────────────────────────────────────────
+
+async function loadQuests() {
+  var container = document.getElementById('page-quests');
+  var isAdriana = currentUser === QUEST_DOER;
+
+  container.innerHTML =
+    '<div class="page-header"><h2>Quest Marketplace \u26A1</h2><p>' + (isAdriana ? 'Accept quests and earn money!' : 'Post tasks for ' + QUEST_DOER + ' to earn') + '</p></div>' +
+    
+    // Stats Container
+    '<div class="hub-card" style="margin-bottom:1rem;"><div id="questStats"><div class="loading-spinner"></div></div></div>' +
+    
+    // Add Button
+    '<div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;"><button class="btn-hub" onclick="showNewQuestModal()"><i class="bi bi-plus-lg"></i> ' + (isAdriana ? 'Propose Quest' : 'Post Quest') + '</button></div>' +
+    
+    // Quest List Container
+    '<div id="questList"><div class="loading-spinner"></div></div>' +
+    
+    // --- NEW QUEST MODAL ---
+    '<div class="modal fade" id="questModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">' + (isAdriana ? 'Propose a Quest' : 'Post a Quest') + '</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Task Name</label><input type="text" class="form-control" id="questTitle" placeholder="e.g., Clean the garage"></div>' +
+        '<div class="mb-3"><label class="form-label">Details</label><textarea class="form-control" id="questDesc" rows="2" placeholder="What needs to be done?"></textarea></div>' +
+        
+        // ** NEW: Dropdown Logic (Only visible if Adriana is logged in) **
+        (isAdriana ? 
+          '<div class="mb-3"><label class="form-label">Propose To</label><select class="form-select" id="questTarget">' +
+            '<option value="Mom">Mom</option>' +
+            '<option value="Dad">Dad</option>' +
+            '<option value="Anthony">Anthony</option>' +
+            '<option value="Riah">Riah</option>' +
+            '<option value="Erike">Erike</option>' +
+          '</select></div>' 
+          : '') +
+        
+        '<div class="row"><div class="col-6 mb-3"><label class="form-label">Price ($)</label><input type="number" class="form-control" id="questPrice" step="0.50" min="0" placeholder="5.00"></div><div class="col-6 mb-3"><label class="form-label">Due Date</label><input type="date" class="form-control" id="questDueDate"></div></div>' +
+        '<div class="mb-3 form-check"><input type="checkbox" class="form-check-input" id="questRequiresPhoto"><label class="form-check-label" for="questRequiresPhoto">Require photo proof</label></div>' +
+      '</div>' +
+      
+      '<div class="modal-footer"><button class="btn-hub" onclick="submitQuest()">Submit</button></div>' +
+    '</div></div></div>' +
+    
+    // --- COUNTER OFFER MODAL ---
+    '<div class="modal fade" id="counterModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Counter Offer</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form"><input type="hidden" id="counterQuestId"><div class="mb-3"><label class="form-label">Your counter price ($)</label><input type="number" class="form-control" id="counterPrice" step="0.50" min="0"></div></div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="submitCounter()">Send Counter</button></div>' +
+    '</div></div></div>';
+
+  try {
+    // ** UPDATED: Now passing 'currentUser' to getQuests so we can filter visibility **
+    var results = await Promise.all([runServer('getQuests', 'active', currentUser), runServer('getWeeklyQuestStats')]);
+    renderQuestStats(results[1]);
+    renderQuests(results[0]);
+  } catch (e) { 
+    document.getElementById('questList').innerHTML = '<p class="text-muted">Could not load quests</p>'; 
+  }
+}
+
+function renderQuestStats(stats) {
+  var pct = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
+  document.getElementById('questStats').innerHTML =
+    '<div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">' +
+      '<div><div class="bento-label">Completed</div><div style="font-size:1.4rem;font-weight:700;font-family:\'Playfair Display\',serif;">' + stats.completed + ' / ' + stats.total + '</div></div>' +
+      '<div><div class="bento-label">Earned</div><div style="font-size:1.4rem;font-weight:700;font-family:\'Playfair Display\',serif;color:var(--clr-success);">$' + stats.earnings.toFixed(2) + '</div></div>' +
+      '<div><div class="bento-label">Pending Approval</div><div style="font-size:1.4rem;font-weight:700;font-family:\'Playfair Display\',serif;color:var(--clr-warning);">' + stats.pendingApproval + '</div></div>' +
+      '<div><div class="bento-label">Forfeited</div><div style="font-size:1.4rem;font-weight:700;font-family:\'Playfair Display\',serif;color:var(--clr-danger);">' + stats.forfeited + '</div></div>' +
+      '<div style="flex:1;min-width:150px;"><div class="bento-label">Progress</div><div class="quest-progress" style="height:14px;"><div class="quest-progress-fill" style="width:' + pct + '%"></div></div></div>' +
+    '</div>';
+}
+
+function renderQuests(quests) {
+  var container = document.getElementById('questList');
+  var isAdriana = currentUser === QUEST_DOER;
+
+  // 1. Handle Empty State
+  if (!quests || quests.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="bi bi-lightning-charge"></i><p>No active quests. Create one!</p></div>';
+    return;
+  }
+
+  // 2. Map through quests to build HTML
+  container.innerHTML = quests.map(function(q) {
+    
+    // -- Price Formatting --
+    var priceHtml = '';
+    if (q.CounterPrice && q.Status === 'Counter') {
+      priceHtml = '<span class="quest-price counter">$' + parseFloat(q.ProposedPrice).toFixed(2) + '</span> <span class="quest-price">$' + parseFloat(q.CounterPrice).toFixed(2) + '</span>';
+    } else if (q.FinalPrice) {
+      priceHtml = '<span class="quest-price">$' + parseFloat(q.FinalPrice).toFixed(2) + '</span>';
+    } else {
+      priceHtml = '<span class="quest-price">$' + parseFloat(q.ProposedPrice).toFixed(2) + '</span>';
+    }
+
+    // -- Badges --
+    var photoBadge = q.RequiresPhoto ? '<span class="status-badge" style="background:var(--clr-info);color:#fff;font-size:0.7rem;margin-left:0.5rem;"><i class="bi bi-camera-fill"></i> Photo Required</span>' : '';
+    var proofBadge = q.PhotoProofURL ? '<span class="status-badge" style="background:var(--clr-success);color:#fff;font-size:0.7rem;margin-left:0.5rem;"><i class="bi bi-check-circle-fill"></i> Proof Uploaded</span>' : '';
+
+    // ** NEW: Target Badge Logic **
+    var targetBadge = '';
+    if (q.ProposedBy === QUEST_DOER && q.ProposedTo) {
+      targetBadge = '<span class="status-badge" style="background:#EEE; color:#555; margin-left:5px; font-size:0.7rem;"><i class="bi bi-person-fill"></i> For ' + escapeHtml(q.ProposedTo) + '</span>';
+    }
+
+    // -- Action Buttons Logic --
+    var actionsHtml = '';
+    var isProposer = q.ProposedBy === currentUser || currentUser === 'Anthony';
+
+    // A. Proposed Status
+    if (q.Status === 'Proposed') {
+      if (q.ProposedBy === QUEST_DOER && !isAdriana) {
+        actionsHtml = '<button class="btn-hub btn-hub-sm btn-hub-success" onclick="respondQuest(\'' + q.ID + '\',\'accept\')"><i class="bi bi-check-lg"></i> Accept</button><button class="btn-hub btn-hub-sm btn-hub-danger" onclick="respondQuest(\'' + q.ID + '\',\'deny\')"><i class="bi bi-x-lg"></i> Deny</button><button class="btn-hub btn-hub-sm btn-hub-warning" onclick="showCounterModal(\'' + q.ID + '\')"><i class="bi bi-arrow-left-right"></i> Counter</button>';
+      } else if (q.ProposedBy !== QUEST_DOER && isAdriana) {
+        actionsHtml = '<button class="btn-hub btn-hub-sm btn-hub-success" onclick="respondQuest(\'' + q.ID + '\',\'accept\')"><i class="bi bi-check-lg"></i> Accept</button><button class="btn-hub btn-hub-sm btn-hub-danger" onclick="respondQuest(\'' + q.ID + '\',\'deny\')"><i class="bi bi-x-lg"></i> Deny</button>';
+      }
+    } 
+    // B. Counter Status
+    else if (q.Status === 'Counter' && isAdriana) {
+      actionsHtml = '<button class="btn-hub btn-hub-sm btn-hub-success" onclick="respondQuest(\'' + q.ID + '\',\'accept\')"><i class="bi bi-check-lg"></i> Accept</button><button class="btn-hub btn-hub-sm btn-hub-danger" onclick="respondQuest(\'' + q.ID + '\',\'deny\')"><i class="bi bi-x-lg"></i> Deny</button>';
+    } 
+    // C. Accepted Status (With Photo Guard)
+    else if (q.Status === 'Accepted') {
+      if (isAdriana) {
+        var needsPhoto = q.RequiresPhoto && !q.PhotoProofURL;
+        var actionBtn = '';
+
+        if (needsPhoto) {
+           actionBtn = '<button class="btn-hub btn-hub-sm btn-hub-warning" onclick="showToast(\'Photo verification required! Please upload proof.\', \'error\')"><i class="bi bi-camera-fill"></i> Complete</button>';
+        } else {
+           actionBtn = '<button class="btn-hub btn-hub-sm btn-hub-success" onclick="markComplete(\'' + q.ID + '\')"><i class="bi bi-check-circle-fill"></i> Mark Complete</button>';
+        }
+
+        var uploadBtn = '<label class="btn-hub-outline btn-hub-sm" style="cursor:pointer; margin-left:5px;"><i class="bi bi-upload"></i> Upload Proof<input type="file" accept="image/*" style="display:none;" onchange="uploadProof(\'' + q.ID + '\', this)"></label>';
+        
+        actionsHtml = actionBtn + uploadBtn;
+      }
+    }
+
+    // D. Revoke Logic
+    if (isProposer && !isAdriana) {
+      actionsHtml += '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" style="margin-left:5px;" onclick="revokeQuest(\'' + q.ID + '\')"><i class="bi bi-x-circle-fill"></i> Revoke</button>';
+    }
+
+    // -- Final HTML Assembly --
+    var statusClass = 'status-' + q.Status.toLowerCase().replace(' ', '-');
+    
+    return '<div class="quest-card">' +
+             '<div class="quest-card-header">' +
+               '<div>' +
+                 '<h4 class="quest-title">' + escapeHtml(q.Title) + photoBadge + proofBadge + targetBadge + '</h4>' +
+                 '<div class="quest-meta">' + 
+                   (q.ProposedBy === QUEST_DOER ? '\uD83D\uDCA1 Proposed by ' + QUEST_DOER : '\uD83D\uDCCB Posted by ' + q.ProposedBy) + 
+                   (q.DueDate ? ' \u00B7 Due ' + formatDate(q.DueDate) : '') + 
+                 '</div>' +
+               '</div>' +
+               '<div style="text-align:right;">' + 
+                 priceHtml + 
+                 '<div><span class="status-badge ' + statusClass + '">' + q.Status + '</span></div>' +
+               '</div>' +
+             '</div>' + 
+             (q.Description ? '<p style="font-size:0.88rem;color:var(--clr-text-muted);margin:0.5rem 0;">' + escapeHtml(q.Description) + '</p>' : '') + 
+             (actionsHtml ? '<div class="quest-actions">' + actionsHtml + '</div>' : '') + 
+           '</div>';
+  }).join('');
+}
+
+function showNewQuestModal() { new bootstrap.Modal(document.getElementById('questModal')).show(); }
+
+async function submitQuest() {
+  var title = document.getElementById('questTitle').value.trim();
+  var desc = document.getElementById('questDesc').value.trim();
+  var price = document.getElementById('questPrice').value;
+  var dueDate = document.getElementById('questDueDate').value;
+  var requiresPhoto = document.getElementById('questRequiresPhoto').checked;
+  var targetEl = document.getElementById('questTarget');
+  var proposedTo = targetEl ? targetEl.value : QUEST_DOER;
+  if (!title || !price) { 
+    showToast('Title and price required', 'error'); 
+    return; 
+  }
+  try {
+    await runServer('proposeQuest', title, desc, parseFloat(price), dueDate, currentUser, requiresPhoto, proposedTo);
+    bootstrap.Modal.getInstance(document.getElementById('questModal')).hide();
+    showToast('Quest submitted!', 'success'); 
+    loadQuests();
+  } catch (e) { 
+    showToast('Failed to submit quest', 'error'); 
+  }
+}
+
+function showCounterModal(questId) {
+  document.getElementById('counterQuestId').value = questId;
+  document.getElementById('counterPrice').value = '';
+  new bootstrap.Modal(document.getElementById('counterModal')).show();
+}
+
+async function submitCounter() {
+  var questId = document.getElementById('counterQuestId').value;
+  var price = document.getElementById('counterPrice').value;
+  if (!price) { showToast('Enter a price', 'error'); return; }
+  try {
+    await runServer('counterOfferQuest', questId, parseFloat(price), currentUser);
+    bootstrap.Modal.getInstance(document.getElementById('counterModal')).hide();
+    showToast('Counter offer sent!', 'success'); loadQuests();
+  } catch (e) { showToast('Failed to send counter', 'error'); }
+}
+
+async function respondQuest(questId, action) {
+  try {
+    var result = await runServer('respondToQuest', questId, action, currentUser);
+    if (result.success) { showToast(action === 'accept' ? 'Quest accepted!' : 'Quest denied', action === 'accept' ? 'success' : 'info'); loadQuests(); }
+  } catch (e) { showToast('Action failed', 'error'); }
+}
+
+async function markComplete(questId) {
+  try {
+    var result = await runServer('completeQuest', questId);
+    if (result.success) {
+      showToast('Marked for review!', 'success'); loadQuests();
+    } else {
+      showToast(result.error || 'Cannot mark complete', 'error');
+    }
+  } catch (e) { showToast('Failed', 'error'); }
+}
+
+async function revokeQuest(questId) {
+  var reason = prompt('Why is this quest being revoked?');
+  if (reason === null) return;
+  try {
+    var result = await runServer('revokeQuest', questId, reason, currentUser);
+    if (result.success) {
+      showToast('Quest revoked', 'info'); loadQuests();
+    } else {
+      showToast(result.error || 'Could not revoke', 'error');
+    }
+  } catch (e) { showToast('Failed to revoke', 'error'); }
+}
+
+async function uploadProof(questId, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var labelBtn = input.parentElement;
+  var originalHtml = labelBtn.innerHTML;
+  labelBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
+  labelBtn.style.opacity = '0.6';
+  labelBtn.style.pointerEvents = 'none';
+  var reader = new FileReader();
+  reader.onload = async function(e) {
+    var base64 = e.target.result.split(',')[1];
+    try {
+      var result = await runServer('uploadQuestProof', questId, base64, file.type, file.name);
+      if (result.success) { 
+        showToast('Proof uploaded!', 'success'); 
+        loadQuests(); 
+      } else {
+        showToast('Upload failed: ' + result.error, 'error');
+        labelBtn.innerHTML = originalHtml;
+        labelBtn.style.opacity = '1';
+        labelBtn.style.pointerEvents = 'auto';
+      }
+    } catch (err) { 
+      showToast('Upload error', 'error');
+      labelBtn.innerHTML = originalHtml;
+      labelBtn.style.opacity = '1';
+      labelBtn.style.pointerEvents = 'auto';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── QUEST REVIEW ────────────────────────────────────────────
+
+async function loadQuestReview() {
+  var container = document.getElementById('page-questReview');
+  container.innerHTML =
+    '<div class="page-header"><h2>Quest Review \uD83D\uDCDC</h2><p>Review the kingdom\'s completed quests</p></div>' +
+    '<div class="hub-card"><div id="questReviewList"><div class="loading-spinner"></div></div></div>';
+
+  try {
+    var quests = await runServer('getQuests', 'history');
+    renderQuestReview(quests);
+  } catch (e) { document.getElementById('questReviewList').innerHTML = '<p class="text-muted">Could not load review</p>'; }
+}
+
+function renderQuestReview(quests) {
+  var container = document.getElementById('questReviewList');
+  
+  if (!quests || quests.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="bi bi-journal-check"></i><p>No quest history yet</p></div>';
+    return;
+  }
+
+  var pending = quests.filter(q => q.Status === 'Pending Approval');
+  var history = quests.filter(q => q.Status !== 'Pending Approval');
+
+  function buildTable(list) {
+    if (list.length === 0) return '<p class="text-muted" style="padding:1rem;">No quests here.</p>';
+    
+    var html = '<table class="hub-table"><thead><tr><th>Quest</th><th>Proposer</th><th>Price</th><th>Status</th><th>Proof</th><th>Action</th></tr></thead><tbody>';
+    
+    html += list.map(function(q) {
+      var statusClass = 'status-' + q.Status.toLowerCase().replace(' ', '-');
+      var isProposer = (currentUser === q.ProposedBy || currentUser === 'Anthony');
+      var isAdriana = (currentUser === QUEST_DOER);
+      var proofCell = q.PhotoProofURL ? '<a href="' + q.PhotoProofURL + '" target="_blank" class="btn-hub-outline btn-hub-sm" style="font-size: 0.75rem;">View Proof</a>' : '<span class="text-muted" style="font-size: 0.8rem;">None</span>';
+      var actionBtn = '';
+      if (q.Status === 'Pending Approval') {
+        if (isProposer && !isAdriana) {
+          actionBtn = '<div style="display:flex; gap:5px;"><button class="btn-hub btn-hub-sm btn-hub-success" onclick="approveQuestReview(\'' + q.ID + '\')"><i class="bi bi-check-lg"></i></button><button class="btn-hub btn-hub-sm btn-hub-danger" onclick="denyQuestReview(\'' + q.ID + '\')"><i class="bi bi-x-lg"></i></button></div>';
+        } else {
+          actionBtn = '<span style="font-size: 0.75rem; color: #999; font-style: italic;">Awaiting ' + q.ProposedBy + '</span>';
+        }
+      }
+      
+      return '<tr><td><div style="font-weight: 600; color: var(--clr-text-dark);">' + escapeHtml(q.Title) + '</div><div style="font-size: 0.7rem; color: #999;">' + q.CreatedAt + '</div></td>' +
+        '<td><div style="display: inline-flex; align-items: center; background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; border: 1px solid #e9ecef;"><i class="bi bi-person" style="margin-right: 4px; font-size: 0.85rem;"></i>' + escapeHtml(q.ProposedBy) + '</div></td>' +
+        '<td style="font-weight: 700; color: var(--clr-text-dark);">$' + (parseFloat(q.FinalPrice) || parseFloat(q.ProposedPrice) || 0).toFixed(2) + '</td>' +
+        '<td><span class="status-badge ' + statusClass + '" style="font-size: 0.7rem;">' + q.Status + '</span></td>' +
+        '<td>' + proofCell + '</td>' +
+        '<td>' + actionBtn + '</td></tr>';
+    }).join('');
+    
+    html += '</tbody></table>';
+    return html;
+  }
+
+  container.innerHTML =
+    '<h5 style="margin:0 0 1.25rem 0; font-family: \'Playfair Display\', serif; color: var(--clr-text-dark);">Pending Review</h5>' +
+    buildTable(pending) +
+    '<div style="margin-top: 3rem;">' +
+      '<h6 style="color: #adb5bd; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; margin-bottom: 1rem; font-weight: 700;">Completed History</h6>' +
+      buildTable(history) +
+    '</div>';
+}
+
+async function approveQuestReview(questId) {
+  try { await runServer('approveQuest', questId); showToast('Quest approved! Payment confirmed.', 'success'); loadQuestReview(); } catch (e) { showToast('Failed to approve', 'error'); }
+}
+
+async function denyQuestReview(questId) {
+  var reason = prompt('Why is this quest being denied?');
+  if (reason === null) return;
+  try {
+    var result = await runServer('denyQuestReview', questId, reason);
+    if (result.success) { showToast('Quest denied', 'info'); loadQuestReview(); }
+    else showToast(result.error || 'Could not deny', 'error');
+  } catch (e) { showToast('Failed to deny', 'error'); }
+}
+
+async function markCompleteReview(questId) {
+  try {
+    var result = await runServer('completeQuest', questId);
+    if (result.success) { showToast('Marked for review!', 'success'); loadQuestReview(); }
+    else showToast(result.error || 'Cannot mark complete', 'error');
+  } catch (e) { showToast('Failed', 'error'); }
+}
+
+async function uploadProofReview(questId, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = async function(e) {
+    var base64 = e.target.result.split(',')[1];
+    try {
+      var result = await runServer('uploadQuestProof', questId, base64, file.type, file.name);
+      if (result.success) { showToast('Proof uploaded!', 'success'); loadQuestReview(); }
+      else showToast('Upload failed: ' + result.error, 'error');
+    } catch (err) { showToast('Upload error', 'error'); }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── BILL CENTER (Cleaned & Verified) ────────────────────────
+
+// Global store for bill data to allow viewing details without re-fetching
+var currentBillsData = [];
+
+async function loadBills() {
+  var container = document.getElementById('page-bills');
+  
+  container.innerHTML =
+    '<div class="page-header"><h2>Chamber of Debt \uD83C\uDFF4\u200D\u2620\uFE0F</h2><p>Track the kingdom\'s shared treasures and dues</p></div>' +
+    
+    // Summary Stats Area
+    '<div id="billStats" style="display:flex; gap:1rem; margin-bottom:1.5rem;"></div>' +
+
+    // Invoice List Container
+    '<div class="hub-card">' +
+      '<div class="hub-card-header">' +
+        '<h3 class="hub-card-title">Invoices</h3>' +
+        ((currentUser === 'Mom' || currentUser === 'Dad') ? 
+         '<button class="btn-hub" onclick="showAddBillModal()"><i class="bi bi-plus-lg"></i> Create Invoice</button>' : '') +
+      '</div>' +
+      '<div id="billList"><div class="loading-spinner"></div></div>' +
+    '</div>' +
+
+    // --- CREATE INVOICE MODAL ---
+    '<div class="modal fade" id="billModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Create Invoice</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="row">' +
+          '<div class="col-7 mb-3"><label class="form-label">Recipient</label><select class="form-select" id="billRecipient"><option value="Anthony">Anthony</option><option value="Riah">Riah</option><option value="Erike">Erike</option></select></div>' +
+          '<div class="col-5 mb-3"><label class="form-label">Due Date</label><input type="date" class="form-control" id="billDueDate"></div>' +
+        '</div>' +
+        '<div class="mb-3"><label class="form-label">Invoice Title</label><input type="text" class="form-control" id="billTitle" placeholder="e.g. February Expenses"></div>' +
+        
+        '<label class="form-label">Line Items</label>' +
+        '<div id="billItemsContainer" style="background:var(--clr-surface-alt); padding:10px; border-radius:8px;"></div>' +
+        '<button class="btn-hub-outline btn-hub-sm" style="margin-top:10px; width:100%; justify-content:center;" onclick="addBillLineItem()">+ Add Item</button>' +
+        
+        '<div style="text-align:right; margin-top:15px; font-weight:bold; font-size:1.1rem;">Total: $<span id="billTotalDisplay">0.00</span></div>' +
+        
+        '<div class="form-check" style="margin-top:10px;">' + 
+          '<input class="form-check-input" type="checkbox" id="billIsPrivate">' +
+          '<label class="form-check-label" for="billIsPrivate">Private</label>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="submitBill()">Send Invoice</button></div>' +
+    '</div></div></div>' +
+
+    // --- VIEW DETAILS MODAL ---
+    '<div class="modal fade" id="billDetailModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title" id="viewBillTitle"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body">' +
+        '<div id="viewBillItems" style="margin-bottom:1rem;"></div>' +
+        '<div style="border-top:1px solid #eee; padding-top:10px; display:flex; justify-content:space-between; font-weight:bold;"><span>Total</span><span id="viewBillTotal"></span></div>' +
+      '</div>' +
+      '<div class="modal-footer" id="viewBillFooter"></div>' +
+    '</div></div></div>';
+
+  try {
+    var results = await Promise.all([runServer('getBills', currentUser), runServer('getBillSummary', currentUser)]);
+    renderBillStats(results[1]);
+    renderBills(results[0]);
+  } catch (e) { 
+    document.getElementById('billList').innerHTML = '<p class="text-muted">Could not load bills. Check connection.</p>'; 
+  }
+}
+
+// 1. RENDER SUMMARY CARDS
+function renderBillStats(summary) {
+  var container = document.getElementById('billStats');
+  var html = '';
+
+  if (summary.owedByMe > 0) {
+    html += '<div class="bento-card" style="flex:1; background:#FFF0F0; border-color:#FFD0D0;">' +
+              '<div class="bento-label" style="color:#D00;">I Owe</div>' +
+              '<div style="font-size:1.5rem; font-weight:700; color:#D00;">$' + summary.owedByMe.toFixed(2) + '</div>' +
+            '</div>';
+  }
+
+  if (summary.owedToMe > 0) {
+    var breakdownHtml = '<ul style="list-style:none; padding:0; margin:0.75rem 0 0 0; border-top:1px solid rgba(0,0,0,0.05); padding-top:0.5rem;">';
+    for (var person in summary.breakdown) {
+      breakdownHtml += '<li style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:0.35rem;">' +
+                         '<span style="color:var(--clr-text-muted);">' + person + '</span>' +
+                         '<span style="font-weight:600; color:var(--clr-success);">$' + summary.breakdown[person].toFixed(2) + '</span>' +
+                       '</li>';
+    }
+    breakdownHtml += '</ul>';
+
+    html += '<div class="bento-card" style="flex:1; background:#F0FFF4; border-color:#D0FFD8;">' +
+              '<div class="bento-label" style="color:var(--clr-success);">I am Owed</div>' +
+              '<div style="font-size:1.8rem; font-weight:700; color:var(--clr-success); line-height:1;">$' + summary.owedToMe.toFixed(2) + '</div>' +
+              breakdownHtml +
+            '</div>';
+  } 
+  
+  if (summary.owedByMe === 0 && summary.owedToMe === 0) {
+    html += '<div class="bento-card" style="flex:1;">' + 
+            '<div class="bento-label">Balance</div>' + 
+            '<div style="font-size:1.5rem; color:var(--clr-text-muted);">All Settled \u2728</div>' + 
+            '</div>';
+  }
+  
+  container.innerHTML = html;
+}
+
+// 2. RENDER BILL LIST
+function renderBills(bills) {
+  currentBillsData = bills;
+  var container = document.getElementById('billList');
+
+  if (!bills || bills.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="bi bi-wallet2"></i><p>No invoices found.</p></div>';
+    return;
+  }
+
+  bills.sort(function(a, b) {
+    var dateA = a.DueDate ? new Date(a.DueDate) : new Date('2099-12-31');
+    var dateB = b.DueDate ? new Date(b.DueDate) : new Date('2099-12-31');
+    return dateA - dateB;
+  });
+
+  var activeBills = bills.filter(function(b) { return b.Status !== 'Paid'; });
+  var paidBills = bills.filter(function(b) { return b.Status === 'Paid'; });
+
+  function buildBillTable(list) {
+    if (list.length === 0) return '<p class="text-muted" style="padding:1rem;">No bills in this section.</p>';
+    var html = '<table class="hub-table"><thead><tr><th>Due</th><th>Title</th><th>Amount</th><th>For</th><th>Action</th></tr></thead><tbody>';
+    html += list.map(function(b) {
+      var statusClass = b.Status === 'Paid' ? 'status-paid' : 'status-pending';
+      var isIncoming = b.Recipient === currentUser;
+      var directionIcon = isIncoming ? '<i class="bi bi-arrow-down-left text-danger"></i>' : '<i class="bi bi-arrow-up-right text-success"></i>';
+      var privateIcon = b.IsPrivate ? '<i class="bi bi-lock-fill text-muted" title="Private Bill" style="margin-right:5px;"></i>' : '';
+      var payBtn = '';
+      if (isIncoming && b.Status === 'Pending') {
+        payBtn = '<button class="btn-hub btn-hub-sm btn-hub-success" onclick="event.stopPropagation(); markPaid(\'' + b.ID + '\')">Mark Paid</button>';
+      } else {
+        payBtn = '<span class="status-badge ' + statusClass + '">' + b.Status + '</span>';
+      }
+      var dateDisplay = b.DueDate ? formatDate(b.DueDate) : '<span class="text-muted">-</span>';
+      return '<tr style="cursor:pointer;" onclick="viewBillDetails(\'' + b.ID + '\')">' +
+               '<td>' + dateDisplay + '</td>' +
+               '<td>' + privateIcon + escapeHtml(b.Reason) + '</td>' +
+               '<td style="font-weight:700;">' + directionIcon + ' $' + parseFloat(b.Amount).toFixed(2) + '</td>' +
+               '<td>' + escapeHtml(b.Recipient) + '</td>' +
+               '<td>' + payBtn + '</td>' +
+             '</tr>';
+    }).join('');
+    html += '</tbody></table>';
+    return html;
+  }
+
+  var activeHtml = '<h5 style="margin:0 0 1rem 0; color:var(--clr-primary);">Outstanding Bills (' + activeBills.length + ')</h5>' + 
+                   buildBillTable(activeBills);
+
+  var historyHtml = '';
+  if (paidBills.length > 0) {
+    historyHtml = '<details style="margin-top:2rem; border-top:1px solid var(--clr-border); padding-top:1rem;">' +
+                  '<summary style="cursor:pointer; font-weight:600; color:var(--clr-text-muted);">View Paid History (' + paidBills.length + ')</summary>' +
+                  '<div style="margin-top:1rem;">' + buildBillTable(paidBills) + '</div>' +
+                  '</details>';
+  }
+
+  container.innerHTML = activeHtml + historyHtml;
+}
+
+// 3. ADD BILL FUNCTIONS (Modal & Logic)
+function showAddBillModal() {
+  document.getElementById('billTitle').value = '';
+  document.getElementById('billDueDate').value = '';
+  document.getElementById('billItemsContainer').innerHTML = '';
+  document.getElementById('billIsPrivate').checked = false;
+  addBillLineItem();
+  new bootstrap.Modal(document.getElementById('billModal')).show();
+  updateBillTotal();
+}
+
+function addBillLineItem() {
+  var container = document.getElementById('billItemsContainer');
+  var div = document.createElement('div');
+  div.className = 'bill-item-row';
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.marginBottom = '8px';
+  div.innerHTML = 
+    '<input type="text" class="form-control form-control-sm item-desc" placeholder="Item (e.g. Rent)">' +
+    '<input type="number" class="form-control form-control-sm item-amount" placeholder="0.00" step="0.01" style="width:100px;" oninput="updateBillTotal()">' +
+    '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" onclick="this.parentElement.remove(); updateBillTotal();"><i class="bi bi-x"></i></button>';
+  container.appendChild(div);
+}
+
+function updateBillTotal() {
+  var total = 0;
+  document.querySelectorAll('.item-amount').forEach(input => {
+    total += parseFloat(input.value) || 0;
+  });
+  document.getElementById('billTotalDisplay').textContent = total.toFixed(2);
+}
+
+async function submitBill() {
+  var recipient = document.getElementById('billRecipient').value;
+  var title = document.getElementById('billTitle').value;
+  var dueDate = document.getElementById('billDueDate').value;
+  var isPrivateEl = document.getElementById('billIsPrivate');
+  var isPrivate = isPrivateEl ? isPrivateEl.checked : false;
+  var items = [];
+  document.querySelectorAll('.bill-item-row').forEach(row => {
+    var desc = row.querySelector('.item-desc').value.trim();
+    var amt = parseFloat(row.querySelector('.item-amount').value);
+    if (desc && amt) items.push({ desc: desc, amount: amt });
+  });
+  if (!title || items.length === 0) { showToast('Title and at least one item required', 'error'); return; }
+  try {
+    await runServer('addBill', recipient, title, items, dueDate, currentUser, isPrivate);
+    bootstrap.Modal.getInstance(document.getElementById('billModal')).hide();
+    showToast('Invoice sent!', 'success'); loadBills();
+  } catch (e) { showToast('Failed to send invoice', 'error'); }
+}
+
+// 4. VIEW DETAILS LOGIC
+function viewBillDetails(id) {
+  var bill = currentBillsData.find(b => b.ID === id);
+  if (!bill) return;
+  document.getElementById('viewBillTitle').textContent = bill.Reason;
+  var html = '<table style="width:100%; font-size:0.9rem;">';
+  if (bill.Details && bill.Details.length > 0) {
+    bill.Details.forEach(item => {
+      html += '<tr><td style="padding:4px 0;">' + escapeHtml(item.desc) + '</td><td style="text-align:right;">$' + parseFloat(item.amount).toFixed(2) + '</td></tr>';
+    });
+  } else {
+    html += '<tr><td>Flat Rate</td><td style="text-align:right;">$' + parseFloat(bill.Amount).toFixed(2) + '</td></tr>';
+  }
+  html += '</table>';
+  document.getElementById('viewBillItems').innerHTML = html;
+  document.getElementById('viewBillTotal').textContent = '$' + parseFloat(bill.Amount).toFixed(2);
+  var footer = document.getElementById('viewBillFooter');
+  if (bill.Recipient === currentUser && bill.Status === 'Pending') {
+    footer.innerHTML = '<button class="btn-hub btn-hub-success" style="width:100%" onclick="markPaid(\'' + bill.ID + '\')">Mark as Paid</button>';
+  } else {
+    footer.innerHTML = '<small class="text-muted">Issued by ' + bill.CreatedBy + '</small>';
+  }
+  new bootstrap.Modal(document.getElementById('billDetailModal')).show();
+}
+
+async function markPaid(id) {
+  try {
+    var res = await runServer('markBillPaid', id);
+    if (res && res.success) {
+      showToast('Payment recorded!', 'success');
+      const modalEl = document.getElementById('billDetailModal');
+      if (modalEl) {
+        const modalInst = bootstrap.Modal.getInstance(modalEl);
+        if (modalInst) modalInst.hide();
+      }
+      loadBills();
+    } else {
+      showToast('Error: ' + (res.error || 'Server rejected request'), 'error');
+    }
+  } catch(e) {
+    showToast('Network error: ' + e.message, 'error');
+  }
+}
+
+// ─── REGISTRY (EVENTS & ITEMS + SECRET SANTA) ───────────────
+
+var activeEventId = null;
+var currentEventTitle = '';
+var currentEventType = '';
+var knownFamily = ['MOM', 'DAD', 'ANTHONY', 'RIAH', 'ERIKE', 'ADRIANA'];
+
+async function loadRegistry() {
+  activeEventId = null;
+  currentEventType = '';
+  var container = document.getElementById('page-registry');
+  if (!container) return;
+
+  container.innerHTML =
+    // --- DASHBOARD VIEW ---
+    '<div id="reg-dashboard">' +
+      '<div class="page-header" style="margin-bottom:1.5rem;"><h2>The Wishing Well \uD83C\uDF1F</h2><p>Cast your wishes into the well</p></div>' +
+      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">' +
+        '<h5 style="margin:0; font-family:\'Playfair Display\', serif;">My Events</h5>' +
+        '<button class="btn-hub" onclick="openCreateEventModal()"><i class="bi bi-calendar-plus"></i> New Event</button>' +
+      '</div>' +
+      // REMOVED GENERAL STASH CARD. Grid is now empty until events load.
+      '<div id="eventGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem;"></div>' +
+    '</div>' +
+
+    // --- EVENT VIEW (Hidden by default) ---
+    '<div id="reg-event-view" style="display:none;">' +
+      '<div style="display:flex; align-items:center; gap:10px; margin-bottom:1.5rem;">' +
+        '<button class="btn-hub-outline btn-hub-sm" onclick="backToDashboard()"><i class="bi bi-arrow-left"></i> Back</button>' +
+        '<div style="flex-grow:1;"><h2 id="eventTitleDisplay" style="margin:0; font-size:1.5rem;"></h2></div>' +
+        // Buttons
+        '<div style="display:flex; gap:8px;">' +
+          '<button class="btn-hub" id="addWishBtn" onclick="showAddRegistryModal()"><i class="bi bi-gift-fill"></i> Add Wish</button>' +
+          // Note: The main delete button is now on the dashboard card, but we keep this hidden one just in case you want it later
+          '<button class="btn-hub-outline btn-hub-danger" id="deleteEventBtn" style="display:none;" onclick="deleteCurrentEvent()" title="Delete Event"><i class="bi bi-trash3"></i></button>' +
+        '</div>' +
+      '</div>' +
+      '<div id="ssPanel"></div>' +
+      '<div id="registryList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem;"></div>' +
+    '</div>' +
+
+    // --- CREATE EVENT MODAL ---
+    '<div class="modal fade" id="createEventModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">New Event</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Event Title</label><input type="text" class="form-control" id="evtTitle"></div>' +
+        '<div class="row"><div class="col-6 mb-3"><label class="form-label">Date</label><input type="date" class="form-control" id="evtDate"></div>' +
+        '<div class="col-6 mb-3"><label class="form-label">Type</label><select class="form-control" id="evtType" onchange="toggleBudgetField()"><option value="Holiday">\uD83C\uDF89 Holiday</option><option value="Birthday">\uD83C\uDF82 Birthday</option><option value="SecretSanta">\uD83C\uDF85 Secret Santa</option></select></div></div>' +
+        '<div class="mb-3" id="budgetField" style="display:none;"><label class="form-label">Budget per Person ($)</label><input type="number" class="form-control" id="evtBudget" placeholder="25.00" step="0.50"></div>' +
+        '<div class="mb-3"><label class="form-label">Who can see this?</label>' +
+          '<div style="display:flex; gap:10px; margin-bottom:10px;"><button type="button" class="btn-hub-sm active-filter" id="btnPrivacyAll" onclick="setPrivacy(\'ALL\')">Everyone</button><button type="button" class="btn-hub-sm btn-hub-outline" id="btnPrivacySelect" onclick="setPrivacy(\'SELECT\')">Select People</button></div>' +
+          '<div id="privacyCheckboxes" style="display:none; background:#f8f9fa; padding:10px; border-radius:8px;">' +
+            knownFamily.map(function(m) { return '<div class="form-check"><input class="form-check-input privacy-check" type="checkbox" value="' + m + '" id="chk_' + m + '"><label class="form-check-label" for="chk_' + m + '">' + m + '</label></div>'; }).join('') +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="submitCreateEvent()">Create Event</button></div>' +
+    '</div></div></div>' +
+
+    // --- ADD WISH MODAL ---
+    '<div class="modal fade" id="regModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Add to Wishlist</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Item Name</label><input type="text" class="form-control" id="regItem"></div>' +
+        '<div class="mb-3"><label class="form-label">Link (URL) <small class="text-muted">(Optional)</small></label><input type="text" class="form-control" id="regLink"></div>' +
+        '<div class="mb-3"><label class="form-label">Size/Color/Notes</label><input type="text" class="form-control" id="regNotes"></div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="submitRegistryItem()">Add Wish</button></div>' +
+    '</div></div></div>';
+
+  try {
+    var events = await runServer('getRegistryEvents', currentUser);
+    renderDashboardEvents(events);
+  } catch (e) { console.error('Dashboard load error:', e); }
+}
+
+function toggleBudgetField() {
+  var type = document.getElementById('evtType').value;
+  document.getElementById('budgetField').style.display = type === 'SecretSanta' ? '' : 'none';
+}
+
+function renderDashboardEvents(events) {
+  var grid = document.getElementById('eventGrid');
+  if (!grid || !events || events.length === 0) return;
+
+  var html = events.map(function(e) {
+    var safeType = e.Type || 'Holiday';
+    var safeTitle = escapeHtml(e.Title);
+    
+    var typeIcon = '';
+    var typeBadge = '';
+    
+    if (safeType === 'SecretSanta') {
+      typeIcon = '<i class="bi bi-gift-fill text-danger" style="font-size:1.5rem;"></i>';
+      typeBadge = '<span style="font-size:0.7rem; background:#dc3545; color:#fff; padding:2px 8px; border-radius:20px;">Secret Santa</span>';
+    } 
+    else if (safeType === 'Birthday') {
+      typeIcon = '<i class="bi bi-cake2-fill" style="font-size:1.5rem; color:#6f42c1;"></i>';
+      typeBadge = '<span style="font-size:0.7rem; background:#6f42c1; color:#fff; padding:2px 8px; border-radius:20px;">Birthday</span>';
+    } 
+    else {
+      typeIcon = '<div style="position:relative; display:inline-block;">' + 
+                  '<i class="bi bi-stars" style="font-size:1.5rem; color:#d4af37;"></i>' +
+                  '<i class="bi bi-star-fill" style="font-size:1.5rem; color:#d4af37;"></i>';
+      typeBadge = '<span style="font-size:0.7rem; background:#d4af37; color:#fff; padding:2px 8px; border-radius:20px;">Holiday</span>';
+    }
+      
+    var statusBadge = '';
+    if (safeType === 'SecretSanta') {
+      if (e.Status === 'Active') {
+        statusBadge = '<span style="font-size:0.7rem; background:#ffc107; color:#333; padding:2px 8px; border-radius:20px; margin-left:5px;">' + (e.JoinedCount||1) + '/' + (e.InvitedCount||0) + ' joined</span>';
+      } else if (e.Status === 'Drawing') {
+        statusBadge = '<span style="font-size:0.7rem; background:#28a745; color:#fff; padding:2px 8px; border-radius:20px; margin-left:5px;">Names Drawn!</span>';
+      }
+    }
+
+    var dateStr = e.EventDate ? '<div style="font-size:0.78rem; color:var(--clr-text-muted); margin-top:0.25rem;"><i class="bi bi-calendar3"></i> ' + formatDate(e.EventDate) + '</div>' : '';
+    var budgetStr = (e.Budget) ? '<div style="font-size:0.78rem; color:var(--clr-success); margin-top:0.25rem;"><i class="bi bi-wallet2"></i> $' + e.Budget + ' limit</div>' : '';
+
+    var deleteBtn = '';
+    if (e.Owner === currentUser || currentUser === 'Anthony') {
+      deleteBtn = '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" ' +
+        'onclick="event.stopPropagation(); deleteEventFromDashboard(\'' + e.ID + '\', \'' + safeTitle + '\')" ' +
+        'style="position:absolute; top:10px; right:10px; padding:2px 8px; z-index:10;">' +
+        '<i class="bi bi-trash3-fill"></i>' +
+        '</button>';
+    }
+
+    return '<div class="hub-card" onclick="openEvent(\'' + e.ID + '\', \'' + safeTitle + '\', \'' + safeType + '\', \'' + e.Owner + '\')" style="cursor:pointer; padding:1.25rem; position:relative;">' +
+      deleteBtn +
+      '<div style="margin-bottom:0.5rem;">' + typeIcon + '</div>' +
+      '<h5 style="margin:0 0 0.25rem 0; font-weight:700;">' + safeTitle + '</h5>' +
+      '<div style="display:flex; flex-wrap:wrap; margin-bottom:0.5rem;">' + typeBadge + statusBadge + '</div>' +
+      dateStr + budgetStr +
+      '<div style="font-size:0.8rem; color:#6c757d; margin-top:0.5rem;">By ' + escapeHtml(e.Owner) + '</div>' +
+    '</div>';
+  }).join('');
+
+  grid.innerHTML += html;
+}
+
+async function deleteEventFromDashboard(eventId, eventTitle) {
+  if (!confirm('Delete event "' + eventTitle + '"?\nThis will remove all wishlists associated with it.')) return;
+  try {
+    var r = await runServer('deleteRegistryEvent', eventId, currentUser);
+    if (r.success) {
+      showToast('Event deleted', 'success');
+      loadRegistry();
+    } else {
+      showToast(r.error, 'error');
+    }
+  } catch (e) {
+    showToast('Error deleting event', 'error');
+  }
+}
+
+// ─── EVENT NAVIGATION ────────────────────────────────────────
+
+async function openEvent(id, title, type, owner) {
+  activeEventId = id;
+  currentEventTitle = title;
+  currentEventType = type || 'Standard';
+
+  document.getElementById('reg-dashboard').style.display = 'none';
+  document.getElementById('reg-event-view').style.display = 'block';
+  document.getElementById('eventTitleDisplay').textContent = title;
+  document.getElementById('ssPanel').innerHTML = '';
+  document.getElementById('registryList').innerHTML = '<div class="loading-spinner"></div>';
+
+  var btn = document.getElementById('deleteEventBtn');
+  if (id && (owner === currentUser || currentUser === 'Anthony')) {
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+
+  if (currentEventType === 'SecretSanta' && id) {
+    document.getElementById('addWishBtn').style.display = 'none';
+    try {
+      var ssStatus = await runServer('getSecretSantaStatus', id, currentUser);
+      renderSecretSantaPanel(ssStatus);
+    } catch (e) {
+      document.getElementById('ssPanel').innerHTML = '<div class="hub-card" style="padding:1rem;"><p class="text-muted">Could not load Secret Santa status</p></div>';
+    }
+  } else {
+    document.getElementById('addWishBtn').style.display = 'inline-block';
+    try {
+      var items = await runServer('getRegistryItems', currentUser, activeEventId);
+      renderEventItems(items);
+    } catch (e) {
+      document.getElementById('registryList').innerHTML = '<p class="text-muted">Error loading items.</p>';
+    }
+  }
+}
+
+function backToDashboard() {
+  activeEventId = null;
+  currentEventType = '';
+  document.getElementById('reg-event-view').style.display = 'none';
+  document.getElementById('reg-dashboard').style.display = 'block';
+  loadRegistry();
+}
+
+async function deleteCurrentEvent() {
+  if (!confirm('Are you sure you want to delete "' + currentEventTitle + '"?\nThis cannot be undone!')) return;
+  try {
+    var r = await runServer('deleteRegistryEvent', activeEventId, currentUser);
+    if (r.success) {
+      showToast('Event deleted', 'success');
+      backToDashboard();
+    } else {
+      showToast(r.error, 'error');
+    }
+  } catch (e) {
+    showToast('Error deleting event', 'error');
+  }
+}
+
+// ─── SECRET SANTA PANEL ──────────────────────────────────────
+
+function renderSecretSantaPanel(ss) {
+  var panel = document.getElementById('ssPanel');
+  var html = '';
+  var container = document.getElementById('registryList');
+
+  var budgetHtml = ss.budget ? '<div style="display:inline-block; background:var(--clr-surface-alt); padding:4px 12px; border-radius:20px; font-size:0.85rem; margin-bottom:1rem;"><i class="bi bi-wallet2" style="color:var(--clr-success);"></i> Budget: <strong>$' + escapeHtml(String(ss.budget)) + '</strong> per person</div>' : '';
+  var dateHtml = ss.eventDate ? '<div style="display:inline-block; background:var(--clr-surface-alt); padding:4px 12px; border-radius:20px; font-size:0.85rem; margin-bottom:1rem; margin-left:0.5rem;"><i class="bi bi-calendar3"></i> ' + formatDate(ss.eventDate) + '</div>' : '';
+
+  // ── PHASE 1: JOINING (Active) ──
+  if (ss.status === 'Active') {
+    var joinedList = ss.joined.map(function(j) {
+      var niceName = j.charAt(0).toUpperCase() + j.slice(1).toLowerCase();
+      return '<span style="display:inline-block; background:#d4edda; color:#155724; padding:3px 10px; border-radius:20px; font-size:0.8rem; margin:3px;"><i class="bi bi-check-circle-fill"></i> ' + escapeHtml(niceName) + '</span>';
+    }).join('');
+    
+    var waitingList = ss.invited.filter(function(i) { return ss.joined.indexOf(i) === -1; }).map(function(w) {
+      return '<span style="display:inline-block; background:#fff3cd; color:#856404; padding:3px 10px; border-radius:20px; font-size:0.8rem; margin:3px;"><i class="bi bi-hourglass-split"></i> ' + escapeHtml(w) + '</span>';
+    }).join('');
+
+    var joinBtn = '';
+    if (!ss.hasJoined) {
+      joinBtn = '<button class="btn-hub btn-hub-success" style="width:100%; margin-top:1rem;" onclick="joinSS()"><i class="bi bi-person-plus-fill"></i> Join Secret Santa!</button>';
+      document.getElementById('addWishBtn').style.display = 'none';
+    } else {
+      joinBtn = '<div style="text-align:center; margin-top:1rem; padding:0.5rem; background:#d4edda; border-radius:8px; color:#155724;"><i class="bi bi-check-circle-fill"></i> You\'re in!</div>';
+      document.getElementById('addWishBtn').style.display = 'inline-block';
+    }
+
+    var startDrawBtn = '';
+    if (ss.isOwner && ss.totalJoined >= 3) {
+      startDrawBtn = '<button class="btn-hub" style="width:100%; margin-top:0.75rem; background:#dc3545; border-color:#dc3545;" onclick="startDraw()"><i class="bi bi-shuffle"></i> Start the Draw! (' + ss.totalJoined + ' participants)</button>';
+    } else if (ss.isOwner && ss.totalJoined < 3) {
+      startDrawBtn = '<div style="text-align:center; margin-top:0.75rem; font-size:0.85rem; color:var(--clr-text-muted);">Need at least 3 participants to draw (currently ' + ss.totalJoined + ')</div>';
+    }
+
+    html = '<div class="hub-card" style="padding:1.5rem; margin-bottom:1.5rem; border-left:4px solid #dc3545;">' +
+      '<h4 style="margin:0 0 0.5rem 0;"><i class="bi bi-person-fill-gear text-danger"></i> Secret Santa</h4>' +
+      budgetHtml + dateHtml +
+      '<div style="margin:1rem 0;"><div style="font-weight:600; margin-bottom:0.5rem;">Joined (' + ss.totalJoined + '/' + ss.totalInvited + ')</div>' + joinedList + '</div>' +
+      (waitingList ? '<div style="margin-bottom:0.5rem;"><div style="font-weight:600; margin-bottom:0.5rem; color:var(--clr-warning);">Waiting...</div>' + waitingList + '</div>' : '') +
+      joinBtn + startDrawBtn +
+      '</div>';
+
+    if (ss.hasJoined) {
+       runServer('getRegistryItems', currentUser, activeEventId).then(renderEventItems);
+    } else {
+       container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-hourglass-split"></i><p>Join to start your wishlist!</p></div>';
+    }
+  }
+
+  // ── PHASE 2: DRAWING (reveal time) ──
+  else if (ss.status === 'Drawing') {
+    if (!ss.revealed) {
+      html = '<div class="hub-card" style="padding:2rem; margin-bottom:1.5rem; text-align:center; border-left:4px solid #28a745; background:linear-gradient(135deg, #f8f9fa 0%, #fff5f5 100%);">' +
+        '<div style="font-size:3rem; margin-bottom:0.75rem;">\uD83C\uDF81</div>' +
+        '<h3 style="margin:0 0 0.5rem 0;">Names Have Been Drawn!</h3>' +
+        budgetHtml + dateHtml +
+        '<p class="text-muted" style="margin-bottom:1.25rem;">Click below to find out who you\'re buying for...</p>' +
+        '<button class="btn-hub" style="background:#dc3545; border-color:#dc3545; font-size:1.1rem; padding:0.75rem 2rem;" onclick="revealMatch()"><i class="bi bi-eye-fill"></i> Reveal My Match</button>' +
+      '</div>';
+      document.getElementById('addWishBtn').style.display = 'none';
+      container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-eye-slash"></i><p>Reveal your match first to see wishlists!</p></div>';
+    } else {
+      html = '<div class="hub-card" style="padding:1.5rem; margin-bottom:1.5rem; border-left:4px solid #28a745;">' +
+        '<div style="display:flex; align-items:center; gap:1rem;">' +
+          '<div style="width:50px; height:50px; border-radius:50%; background:#dc3545; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">\uD83C\uDF85</div>' +
+          '<div><div style="font-size:0.8rem; color:var(--clr-text-muted); text-transform:uppercase;">You are buying for:</div><h3 style="margin:0; color:#dc3545;">' + escapeHtml(ss.myAssignment) + '</h3></div>' +
+          '<div style="margin-left:auto;">' + budgetHtml + '</div>' +
+        '</div>' +
+      '</div>';
+      document.getElementById('addWishBtn').style.display = 'inline-block';
+      runServer('getRegistryItems', currentUser, activeEventId).then(renderEventItems);
+    }
+  }
+
+  panel.innerHTML = html;
+}
+
+// ─── SECRET SANTA ACTIONS ────────────────────────────────────
+
+async function joinSS() {
+  console.log("Attempting join. Event:", activeEventId, "User:", currentUser);
+  try {
+    var r = await runServer('joinSecretSanta', activeEventId, currentUser);
+    if (r.success) { 
+      showToast('You joined! \uD83C\uDF89', 'success'); 
+      openEvent(activeEventId, currentEventTitle, 'SecretSanta'); 
+    }
+    else { 
+      alert("SERVER SAID NO: " + r.error); 
+      showToast(r.error, 'error'); 
+    }
+  } catch (e) { 
+    alert("CONNECTION ERROR: " + e.message);
+    console.error(e);
+  }
+}
+
+async function startDraw() {
+  if (!confirm('Start the Secret Santa draw? This will randomly assign names and cannot be undone!')) return;
+  try {
+    var r = await runServer('startSecretSantaDraw', activeEventId, currentUser);
+    if (r.success) { showToast(r.message, 'success'); openEvent(activeEventId, currentEventTitle, 'SecretSanta'); }
+    else { showToast(r.error, 'error'); }
+  } catch (e) { showToast('Error starting draw', 'error'); }
+}
+
+async function revealMatch() {
+  try {
+    var r = await runServer('revealSecretSanta', activeEventId, currentUser);
+    if (r.success) { showToast('You got ' + r.receiver + '! \uD83C\uDF81', 'success'); openEvent(activeEventId, currentEventTitle, 'SecretSanta'); }
+    else { showToast(r.error, 'error'); }
+  } catch (e) { showToast('Error revealing match', 'error'); }
+}
+
+// ─── RENDER ITEMS (shared for standard + secret santa) ───────
+
+function renderEventItems(items) {
+  var container = document.getElementById('registryList');
+  if (!items || items.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-gift"></i><p>No items in this list yet.</p></div>';
+    return;
+  }
+
+  container.innerHTML = items.map(function(item) {
+    var isMine = item.CreatedBy === currentUser;
+    var linkBtn = item.Link ? '<a href="' + item.Link + '" target="_blank" class="btn-hub-outline btn-hub-sm" style="color:var(--clr-primary);"><i class="bi bi-box-arrow-up-right"></i> Store</a>' : '';
+    var actionBtn = '';
+    if (isMine) {
+      actionBtn = '<button class="btn-hub-outline btn-hub-sm btn-hub-danger" onclick="deleteRegItem(\'' + item.ID + '\')"><i class="bi bi-trash3"></i></button>';
+    } else if (item.ClaimedBy === currentUser) {
+      actionBtn = '<button class="btn-hub btn-hub-sm btn-hub-success" style="flex:1;" onclick="toggleClaim(\'' + item.ID + '\')"><i class="bi bi-check-circle-fill"></i> You Got This</button>';
+    } else if (item.IsClaimed) {
+      actionBtn = '<button class="btn-hub-outline btn-hub-sm" style="flex:1; background:#f8f9fa; color:#adb5bd; cursor:not-allowed;"><i class="bi bi-lock-fill"></i> Taken</button>';
+    } else {
+      actionBtn = '<button class="btn-hub btn-hub-sm" style="flex:1;" onclick="toggleClaim(\'' + item.ID + '\')"><i class="bi bi-cart-plus"></i> Claim</button>';
+    }
+
+    return '<div class="hub-card" style="display:flex; flex-direction:column; padding:1.25rem; height:100%;">' +
+      '<h5 style="margin:0 0 0.5rem 0; font-weight:700;">' + escapeHtml(item.Item) + '</h5>' +
+      '<div style="font-size:0.75rem; color:#6c757d; text-transform:uppercase; margin-bottom:0.75rem;">For ' + escapeHtml(item.CreatedBy) + '</div>' +
+      '<p class="text-muted" style="font-size:0.9rem; flex-grow:1; margin-bottom:1.25rem;">' + escapeHtml(item.Notes || '') + '</p>' +
+      '<div style="display:flex; gap:0.5rem; align-items:center; margin-top:auto;">' + linkBtn + actionBtn + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── CREATE EVENT ────────────────────────────────────────────
+
+function openCreateEventModal() {
+  document.getElementById('evtTitle').value = '';
+  document.getElementById('evtDate').value = '';
+  document.getElementById('evtType').value = 'Holiday';
+  document.getElementById('evtBudget').value = '';
+  toggleBudgetField();
+  setPrivacy('ALL');
+  new bootstrap.Modal(document.getElementById('createEventModal')).show();
+}
+
+function setPrivacy(mode) {
+  var btnAll = document.getElementById('btnPrivacyAll');
+  var btnSel = document.getElementById('btnPrivacySelect');
+  var box = document.getElementById('privacyCheckboxes');
+  
+  if (mode === 'ALL') {
+    btnAll.className = 'btn-hub-sm active-filter';
+    btnSel.className = 'btn-hub-sm btn-hub-outline';
+    box.style.display = 'none';
+  } else {
+    btnAll.className = 'btn-hub-sm btn-hub-outline';
+    btnSel.className = 'btn-hub-sm active-filter';
+    box.style.display = 'block';
+
+    var listHtml = knownFamily
+      .filter(function(name) { 
+        return name.toUpperCase() !== currentUser.toUpperCase(); 
+      })
+      .map(function(m) {
+        return '<div class="form-check">' +
+                 '<input class="form-check-input privacy-check" type="checkbox" value="' + m + '" id="chk_' + m + '">' +
+                 '<label class="form-check-label" for="chk_' + m + '">' + m + '</label>' +
+               '</div>';
+      }).join('');
+    
+    box.innerHTML = listHtml;
+  }
+}
+
+async function submitCreateEvent() {
+  var title = document.getElementById('evtTitle').value.trim();
+  var date = document.getElementById('evtDate').value;
+  var type = document.getElementById('evtType').value;
+  var budget = document.getElementById('evtBudget').value;
+
+  if (!title) { showToast('Please enter an Event Title.', 'error'); return; }
+  if (!date) { showToast('Please select a Date.', 'error'); return; }
+  if (type === 'SecretSanta' && !budget) { showToast('Please set a Budget for Secret Santa.', 'error'); return; }
+
+  var members = 'EVERYONE';
+  if (document.getElementById('btnPrivacySelect').classList.contains('active-filter')) {
+    var checked = Array.from(document.querySelectorAll('.privacy-check:checked')).map(function(c) { return c.value; });
+    if (checked.length === 0) { showToast('Please select at least one person.', 'error'); return; }
+    if (!checked.includes(currentUser)) checked.push(currentUser);
+    members = JSON.stringify(checked);
+  }
+
+  try {
+    await runServer('createRegistryEvent', title, type, date, members, currentUser, budget);
+    bootstrap.Modal.getInstance(document.getElementById('createEventModal')).hide();
+    showToast('Event created!', 'success');
+    loadRegistry();
+  } catch (e) { showToast('Error creating event', 'error'); }
+}
+
+// ─── ITEM ACTIONS ────────────────────────────────────────────
+
+function showAddRegistryModal() {
+  document.getElementById('regItem').value = '';
+  document.getElementById('regLink').value = '';
+  document.getElementById('regNotes').value = '';
+  new bootstrap.Modal(document.getElementById('regModal')).show();
+}
+
+async function submitRegistryItem() {
+  var item = document.getElementById('regItem').value;
+  var link = document.getElementById('regLink').value;
+  var notes = document.getElementById('regNotes').value;
+  if (!item) { showToast('Item name is required', 'error'); return; }
+  var currentId = activeEventId || '';
+  try {
+    await runServer('addRegistryItem', item, link, '', notes, currentUser, currentId);
+    bootstrap.Modal.getInstance(document.getElementById('regModal')).hide();
+    showToast('Wish added!', 'success');
+    var items = await runServer('getRegistryItems', currentUser, currentId);
+    renderEventItems(items);
+  } catch (e) { showToast('Error adding item', 'error'); }
+}
+
+async function toggleClaim(id) {
+  try {
+    var r = await runServer('toggleClaimItem', id, currentUser);
+    if (r.success) { showToast(r.status === 'claimed' ? 'Secretly claimed! \uD83E\uDD2B' : 'Claim removed', 'success'); var items = await runServer('getRegistryItems', currentUser, activeEventId); renderEventItems(items); }
+    else { showToast(r.error, 'error'); }
+  } catch (e) { showToast('Error', 'error'); }
+}
+
+async function deleteRegItem(id) {
+  if (!confirm('Remove this wish?')) return;
+  try {
+    await runServer('deleteRegistryItem', id, currentUser);
+    var items = await runServer('getRegistryItems', currentUser, activeEventId);
+    renderEventItems(items);
+  } catch (e) { showToast('Error', 'error'); }
+}
+
+// ─── FAMILY VOTE ─────────────────────────────────────────────
+
+var familyVoteTimer = null;
+
+async function loadFamilyVote() {
+  if (familyVoteTimer) { clearInterval(familyVoteTimer); familyVoteTimer = null; }
+
+  var container = document.getElementById('page-familyVote');
+
+  var hourOpts = '';
+  for (var h = 1; h <= 24; h++) {
+    hourOpts += '<option value="' + h + '">' + h + ' hour' + (h > 1 ? 's' : '') + '</option>';
+  }
+
+  var dayOpts = '';
+  for (var d = 0; d <= 7; d++) {
+    var dt = new Date();
+    dt.setDate(dt.getDate() + d);
+    var label = d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    var val = dt.toISOString();
+    dayOpts += '<option value="' + val + '">' + label + '</option>';
+  }
+
+  container.innerHTML =
+    '<div class="page-header"><h2>The Round Table \u2694\uFE0F</h2><p>The council decides together</p></div>' +
+    '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Active Polls</h3><button class="btn-hub" onclick="showFamilyVoteModal()"><i class="bi bi-plus-lg"></i> New Vote</button></div><div id="familyVotesActive"><div class="loading-spinner"></div></div></div>' +
+    '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Past Results</h3></div><div id="familyVotesClosed"><div class="loading-spinner"></div></div></div>' +
+
+    '<div class="modal fade" id="familyVoteModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+      '<div class="modal-header"><h5 class="modal-title">Create Family Vote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
+      '<div class="modal-body hub-form">' +
+        '<div class="mb-3"><label class="form-label">Topic</label><input type="text" class="form-control" id="voteTitle" placeholder="e.g. Movie Night"></div>' +
+        '<div class="mb-3"><label class="form-label">Details</label><input type="text" class="form-control" id="voteDesc" placeholder="Optional details"></div>' +
+        '<div class="mb-3"><label class="form-label">How long should voting stay open?</label>' +
+          '<div style="display:flex;gap:0.5rem;">' +
+            '<select class="form-select" id="voteExpiryType" onchange="toggleExpiryInputs()" style="width:auto;">' +
+              '<option value="hours">Hours from now</option>' +
+              '<option value="day">Until end of day</option>' +
+            '</select>' +
+            '<select class="form-select" id="voteExpiryHours" style="width:auto;">' + hourOpts + '</select>' +
+            '<select class="form-select" id="voteExpiryDay" style="width:auto;display:none;">' + dayOpts + '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mb-3"><label class="form-label">Option 1</label><input type="text" class="form-control" id="voteOpt1"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 2</label><input type="text" class="form-control" id="voteOpt2"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 3 (Optional)</label><input type="text" class="form-control" id="voteOpt3" placeholder="Optional"></div>' +
+        '<div class="mb-3"><label class="form-label">Option 4 (Optional)</label><input type="text" class="form-control" id="voteOpt4" placeholder="Optional"></div>' +
+      '</div>' +
+      '<div class="modal-footer"><button class="btn-hub" onclick="createFamilyPoll()">Start Vote</button></div>' +
+    '</div></div></div>';
+
+  try {
+    var polls = await runServer('getFamilyPolls');
+    renderFamilyPolls(polls);
+  } catch (e) {
+    document.getElementById('familyVotesActive').innerHTML = '<p class="text-muted">Could not load votes</p>';
+    document.getElementById('familyVotesClosed').innerHTML = '';
+  }
+}
+
+function toggleExpiryInputs() {
+  var type = document.getElementById('voteExpiryType').value;
+  document.getElementById('voteExpiryHours').style.display = type === 'hours' ? '' : 'none';
+  document.getElementById('voteExpiryDay').style.display = type === 'day' ? '' : 'none';
+}
+
+function showFamilyVoteModal() {
+  document.getElementById('voteTitle').value = '';
+  document.getElementById('voteDesc').value = '';
+  document.getElementById('voteOpt1').value = '';
+  document.getElementById('voteOpt2').value = '';
+  document.getElementById('voteOpt3').value = '';
+  document.getElementById('voteOpt4').value = '';
+  document.getElementById('voteExpiryType').value = 'hours';
+  document.getElementById('voteExpiryHours').value = '1';
+  toggleExpiryInputs();
+  new bootstrap.Modal(document.getElementById('familyVoteModal')).show();
+}
+
+function calculateExpiresAt() {
+  var type = document.getElementById('voteExpiryType').value;
+  var expires;
+  if (type === 'hours') {
+    var hours = parseInt(document.getElementById('voteExpiryHours').value) || 1;
+    expires = new Date(Date.now() + hours * 3600000);
+  } else {
+    var dayVal = document.getElementById('voteExpiryDay').value;
+    expires = new Date(dayVal);
+    expires.setHours(23, 59, 59, 0);
+  }
+  return expires.toISOString();
+}
+
+async function createFamilyPoll() {
+  var title = document.getElementById('voteTitle').value;
+  var desc = document.getElementById('voteDesc').value;
+  var o1 = document.getElementById('voteOpt1').value;
+  var o2 = document.getElementById('voteOpt2').value;
+  var o3 = document.getElementById('voteOpt3').value;
+  var o4 = document.getElementById('voteOpt4').value;
+  
+  if (!title || !o1 || !o2) { showToast('Topic and 2 options required', 'error'); return; }
+  
+  var expiresAt = calculateExpiresAt();
+
+  try {
+    await runServer('createFamilyPoll', title, desc, o1, o2, o3, o4, currentUser, expiresAt);
+    bootstrap.Modal.getInstance(document.getElementById('familyVoteModal')).hide();
+    showToast('Vote started!', 'success'); loadFamilyVote();
+  } catch (e) { showToast('Failed to create', 'error'); }
+}
+
+function getCountdownText(expiresAt) {
+  if (!expiresAt) return '';
+  var now = new Date();
+  var exp = new Date(expiresAt);
+  var diff = exp - now;
+  if (diff <= 0) return 'Expired';
+  var hours = Math.floor(diff / 3600000);
+  var mins = Math.floor((diff % 3600000) / 60000);
+  if (hours >= 24) {
+    var days = Math.floor(hours / 24);
+    var remHours = hours % 24;
+    return days + 'd ' + remHours + 'h left';
+  }
+  if (hours > 0) return hours + 'h ' + mins + 'm left';
+  return mins + 'm left';
+}
+
+function renderFamilyPolls(polls) {
+  var activeContainer = document.getElementById('familyVotesActive');
+  var closedContainer = document.getElementById('familyVotesClosed');
+
+  var activePolls = polls.filter(function(p) { return p.Status === 'Voting'; });
+  var closedPolls = polls.filter(function(p) { return p.Status === 'Decided'; });
+  
+  if (activePolls.length === 0) {
+    activeContainer.innerHTML = '<div class="empty-state"><i class="bi bi-chat-quote"></i><p>No active polls. Start one!</p></div>';
+  } else {
+    activeContainer.innerHTML = activePolls.map(function(p) {
+      var votes = [1,2,3,4].map(function(n) { var v = String(p['Votes' + n] || ''); return v ? v.split(',') : []; });
+      var totalVotes = votes.reduce(function(s, v) { return s + v.length; }, 0);
+      
+      var optionsHtml = [1,2,3,4].map(function(n) {
+        if (!p['Option' + n]) return ''; 
+        var voted = votes[n-1].indexOf(currentUser) !== -1;
+        return '<div class="meal-option ' + (voted ? 'voted' : '') + '" onclick="voteFamily(\'' + p.ID + '\', ' + n + ')">' +
+          '<span class="meal-option-name">' + escapeHtml(p['Option' + n]) + '</span>' +
+          '<span class="meal-vote-count">' + votes[n-1].length + '</span>' +
+        '</div>';
+      }).join('');
+
+      var countdown = getCountdownText(p.ExpiresAt);
+      var timerHtml = countdown ? '<span style="font-size:0.78rem;color:var(--clr-info);"><i class="bi bi-clock"></i> ' + countdown + '</span>' : '';
+
+      var isCreator = p.CreatedBy === currentUser || currentUser === 'Anthony';
+      var deleteBtn = isCreator ?
+        '<button class="btn-hub-outline btn-hub-sm" style="color:var(--clr-danger);border-color:var(--clr-danger);" onclick="deleteFamilyPoll(\'' + p.ID + '\')" title="Delete Poll"><i class="bi bi-trash3-fill"></i></button>' : '';
+
+      return '<div style="margin-bottom:1.5rem;border-bottom:1px solid var(--clr-border);padding-bottom:1rem;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">' +
+          '<div><h5 style="margin:0;">' + escapeHtml(p.Title) + '</h5>' +
+            (p.Description ? '<p class="text-muted small" style="margin:0.15rem 0 0;">' + escapeHtml(p.Description) + '</p>' : '') +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:0.5rem;">' + timerHtml + deleteBtn + '</div>' +
+        '</div>' +
+        '<div style="font-size:0.75rem;color:var(--clr-text-muted);margin-bottom:0.5rem;">Created by ' + escapeHtml(p.CreatedBy) + ' · ' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + '</div>' +
+        optionsHtml +
+      '</div>';
+    }).join('');
+
+    if (familyVoteTimer) clearInterval(familyVoteTimer);
+    familyVoteTimer = setInterval(function() {
+      document.querySelectorAll('[data-expires]').forEach(function(el) {
+        el.textContent = getCountdownText(el.dataset.expires);
+      });
+    }, 60000);
+  }
+
+  if (closedPolls.length === 0) {
+    closedContainer.innerHTML = '<p class="text-muted" style="font-size:0.85rem;">No past results yet.</p>';
+  } else {
+    closedContainer.innerHTML = closedPolls.slice(0, 10).map(function(p) {
+      var isCreator = p.CreatedBy === currentUser || currentUser === 'Anthony';
+      var deleteBtn = isCreator ?
+        '<button class="btn-hub-outline btn-hub-sm" style="color:var(--clr-danger);border-color:var(--clr-danger);" onclick="deleteFamilyPoll(\'' + p.ID + '\')" title="Delete"><i class="bi bi-trash3-fill"></i></button>' : '';
+
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--clr-border);">' +
+        '<div>' +
+          '<strong>' + escapeHtml(p.Title) + '</strong>' +
+          '<div style="font-size:0.82rem;"><span class="status-badge status-decided">Winner</span> <strong style="margin-left:0.25rem;">' + escapeHtml(p.Winner) + '</strong></div>' +
+          '<small class="text-muted">by ' + escapeHtml(p.CreatedBy) + ' · ' + escapeHtml(p.CreatedAt) + '</small>' +
+        '</div>' +
+        deleteBtn +
+      '</div>';
+    }).join('');
+  }
+}
+
+async function voteFamily(id, opt) {
+  try {
+    var res = await runServer('voteFamilyPoll', id, opt, currentUser);
+    if(res.success) { showToast('Voted!', 'success'); loadFamilyVote(); }
+    else showToast(res.error, 'error');
+  } catch(e) { showToast('Error', 'error'); }
+}
+
+async function deleteFamilyPoll(id) {
+  if (!confirm('Delete this poll?')) return;
+  try {
+    var res = await runServer('deleteFamilyPoll', id, currentUser);
+    if(res.success) { showToast('Poll deleted', 'success'); loadFamilyVote(); }
+    else showToast(res.error, 'error');
+  } catch(e) { showToast('Failed to delete', 'error'); }
+}
+</script>
+
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+
+    // Sync bottom tab bar active state with sidebar navigation
+    function syncTabs(clickedTab) {
+      document.querySelectorAll('.mobile-tab-bar .tab-link').forEach(t => t.classList.remove('active'));
+      if (clickedTab) clickedTab.classList.add('active');
+    }
+
+    // Override navigate to also sync tab bar
+    var _origNavigate = navigate;
+    navigate = function(page, linkEl) {
+      _origNavigate(page, linkEl);
+      document.querySelectorAll('.mobile-tab-bar .tab-link').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-page') === page);
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = document.getElementById('currentUser').value;
+      document.getElementById('userSelect').value = user;
+      applyUserPermissions(user);
+      navigate('dashboard');
+    });
+  </script>
+</body>
+</html>
