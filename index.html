@@ -1336,6 +1336,13 @@ a:hover { color: var(--clr-accent); }
 .login-change-pin-btn:hover {
   color: var(--clr-accent);
 }
+
+.settings-btn {
+  color: var(--clr-accent);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+}
     
 </style>
 
@@ -1361,9 +1368,9 @@ a:hover { color: var(--clr-accent); }
         <button class="login-user-btn" onclick="selectLoginUser('Adriana')"><i class="bi bi-person-fill"></i> Adriana</button>
       </div>
 
-      <button class="login-change-pin-btn" onclick="showChangePinScreen()">Change PIN</button>
+      
 
-      <div class="login-pin-section" id="loginPinSection" style="display:none;">
+     <div class="login-pin-section" id="loginPinSection" style="display:none;">
         <button class="login-back-btn" onclick="showUserList()"><i class="bi bi-arrow-left"></i> Back</button>
         <div class="login-selected-user" id="loginSelectedUser"></div>
         <div class="login-pin-dots" id="pinDots">
@@ -1372,32 +1379,6 @@ a:hover { color: var(--clr-accent); }
           <span class="pin-dot"></span>
           <span class="pin-dot"></span>
         </div>
-        <div class="login-pin-section" id="changePinSection" style="display:none;">
-        <button class="login-back-btn" onclick="showUserList()"><i class="bi bi-arrow-left"></i> Back</button>
-        <div class="login-selected-user" id="changePinUser"></div>
-        <div id="changePinStep" style="color:rgba(245,240,230,0.6); font-size:0.85rem; margin-bottom:1rem;">Enter current PIN</div>
-        <div class="login-pin-dots" id="changePinDots">
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-        </div>
-        <div class="login-pin-error" id="changePinError"></div>
-        <div class="login-numpad">
-          <button class="numpad-btn" onclick="changePinDigit('1')">1</button>
-          <button class="numpad-btn" onclick="changePinDigit('2')">2</button>
-          <button class="numpad-btn" onclick="changePinDigit('3')">3</button>
-          <button class="numpad-btn" onclick="changePinDigit('4')">4</button>
-          <button class="numpad-btn" onclick="changePinDigit('5')">5</button>
-          <button class="numpad-btn" onclick="changePinDigit('6')">6</button>
-          <button class="numpad-btn" onclick="changePinDigit('7')">7</button>
-          <button class="numpad-btn" onclick="changePinDigit('8')">8</button>
-          <button class="numpad-btn" onclick="changePinDigit('9')">9</button>
-          <button class="numpad-btn" onclick="changePinClear()"><i class="bi bi-x-lg"></i></button>
-          <button class="numpad-btn" onclick="changePinDigit('0')">0</button>
-          <button class="numpad-btn" onclick="changePinDelete()"><i class="bi bi-backspace"></i></button>
-        </div>
-      </div>
         <div class="login-pin-error" id="pinError"></div>
         <div class="login-numpad">
           <button class="numpad-btn" onclick="enterDigit('1')">1</button>
@@ -1497,19 +1478,35 @@ a:hover { color: var(--clr-accent); }
 
     <!-- MOBILE HEADER -->
     
-    <header class="mobile-header d-lg-none">
+   <header class="mobile-header d-lg-none">
       <button class="btn btn-link" onclick="logout()" title="Log Out">
         <i class="bi bi-box-arrow-left fs-4"></i>
       </button>
       <span class="mobile-title">Le'Fam Central ✦</span>
-      <div class="notif-bell" onclick="toggleNotifPanel()">
-        <i class="bi bi-bell-fill"></i>
-        <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
-      </div>
-      <div class="notif-enable-btn" id="pushEnableBtn" onclick="setupPushNotifications()" style="display:none;">
-        <i class="bi bi-bell-slash"></i>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div class="notif-bell" onclick="toggleNotifPanel()">
+          <i class="bi bi-bell-fill"></i>
+          <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+        </div>
+        <div class="notif-enable-btn" id="pushEnableBtn" onclick="setupPushNotifications()" style="display:none;">
+          <i class="bi bi-bell-slash"></i>
+        </div>
+        <div class="settings-btn" onclick="showChangePinModal()">
+          <i class="bi bi-gear-fill"></i>
+        </div>
       </div>
     </header>
+
+    <!-- CHANGE PIN MODAL -->
+    <div class="modal fade" id="changePinModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Change PIN</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body hub-form">
+        <div class="mb-3"><label class="form-label">Current PIN</label><input type="password" class="form-control" id="currentPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
+        <div class="mb-3"><label class="form-label">New PIN</label><input type="password" class="form-control" id="newPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
+        <div class="mb-3"><label class="form-label">Confirm New PIN</label><input type="password" class="form-control" id="confirmPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
+      </div>
+      <div class="modal-footer"><button class="btn-hub" onclick="submitChangePin()">Update PIN</button></div>
+    </div></div></div>
 
     <!-- NOTIFICATION DROPDOWN -->
     <div class="notif-panel" id="notifPanel">
@@ -3752,150 +3749,46 @@ async function deleteFamilyPoll(id) {
       location.reload();
     }
   
-    function startNotifPolling() {
+     function startNotifPolling() {
       pollUnreadCount();
       if (notifPollTimer) clearInterval(notifPollTimer);
       notifPollTimer = setInterval(pollUnreadCount, 30000);
     }
 
     // ─── CHANGE PIN ──────────────────────────────────
-    var changePinSelectedUser = '';
-    var changePinEntry = '';
-    var changePinPhase = 'select'; // select, current, new, confirm
-    var changePinCurrentPin = '';
-    var changePinNewPin = '';
-
-    function showChangePinScreen() {
-      document.getElementById('loginUsers').style.display = 'grid';
-      document.getElementById('loginPinSection').style.display = 'none';
-      document.getElementById('changePinSection').style.display = 'none';
-      document.getElementById('loginUsers').parentElement.querySelector('.login-subtitle').textContent = 'Select your name to change PIN';
-      
-      // Swap click handlers to go to change PIN flow
-      var btns = document.querySelectorAll('.login-user-btn');
-      btns.forEach(function(btn) {
-        var user = btn.textContent.trim();
-        btn.onclick = function() { startChangePin(user); };
-      });
+    function showChangePinModal() {
+      document.getElementById('currentPinInput').value = '';
+      document.getElementById('newPinInput').value = '';
+      document.getElementById('confirmPinInput').value = '';
+      new bootstrap.Modal(document.getElementById('changePinModal')).show();
     }
 
-    function startChangePin(user) {
-      changePinSelectedUser = user;
-      changePinEntry = '';
-      changePinPhase = 'current';
-      changePinCurrentPin = '';
-      changePinNewPin = '';
-      
-      document.getElementById('loginUsers').style.display = 'none';
-      document.getElementById('changePinSection').style.display = 'block';
-      document.getElementById('changePinUser').textContent = user;
-      document.getElementById('changePinStep').textContent = 'Enter current PIN';
-      document.getElementById('changePinError').textContent = '';
-      updateChangePinDots();
-    }
+    async function submitChangePin() {
+      var current = document.getElementById('currentPinInput').value;
+      var newPin = document.getElementById('newPinInput').value;
+      var confirm = document.getElementById('confirmPinInput').value;
 
-    function changePinDigit(d) {
-      if (changePinEntry.length >= 4) return;
-      changePinEntry += d;
-      updateChangePinDots();
-      if (changePinEntry.length === 4) {
-        handleChangePinSubmit();
+      if (!current || !newPin || !confirm) { showToast('Fill in all fields', 'error'); return; }
+      if (newPin.length !== 4 || isNaN(newPin)) { showToast('New PIN must be 4 digits', 'error'); return; }
+      if (newPin !== confirm) { showToast('New PINs don\'t match', 'error'); return; }
+
+      try {
+        var result = await runServer('changePin', currentUser, current, newPin);
+        if (result.success) {
+          bootstrap.Modal.getInstance(document.getElementById('changePinModal')).hide();
+          showToast('PIN changed!', 'success');
+        } else {
+          showToast(result.error || 'Could not change PIN', 'error');
+        }
+      } catch (e) {
+        showToast('Connection error', 'error');
       }
     }
 
-    function changePinDelete() {
-      changePinEntry = changePinEntry.slice(0, -1);
-      updateChangePinDots();
-      document.getElementById('changePinError').textContent = '';
-    }
-
-    function changePinClear() {
-      changePinEntry = '';
-      updateChangePinDots();
-      document.getElementById('changePinError').textContent = '';
-    }
-
-    function updateChangePinDots() {
-      var dots = document.querySelectorAll('#changePinDots .pin-dot');
-      dots.forEach(function(dot, i) {
-        dot.classList.toggle('filled', i < changePinEntry.length);
-      });
-    }
-
-    async function handleChangePinSubmit() {
-      if (changePinPhase === 'current') {
-        // Verify current PIN first
-        try {
-          var result = await runServer('verifyPin', changePinSelectedUser, changePinEntry);
-          if (result.success) {
-            changePinCurrentPin = changePinEntry;
-            changePinEntry = '';
-            changePinPhase = 'new';
-            document.getElementById('changePinStep').textContent = 'Enter new PIN';
-            document.getElementById('changePinError').textContent = '';
-            updateChangePinDots();
-          } else {
-            document.getElementById('changePinError').textContent = 'Wrong PIN';
-            changePinEntry = '';
-            updateChangePinDots();
-          }
-        } catch (e) {
-          document.getElementById('changePinError').textContent = 'Connection error';
-          changePinEntry = '';
-          updateChangePinDots();
-        }
-      } else if (changePinPhase === 'new') {
-        changePinNewPin = changePinEntry;
-        changePinEntry = '';
-        changePinPhase = 'confirm';
-        document.getElementById('changePinStep').textContent = 'Confirm new PIN';
-        document.getElementById('changePinError').textContent = '';
-        updateChangePinDots();
-      } else if (changePinPhase === 'confirm') {
-        if (changePinEntry !== changePinNewPin) {
-          document.getElementById('changePinError').textContent = 'PINs don\'t match — try again';
-          changePinEntry = '';
-          changePinPhase = 'new';
-          changePinNewPin = '';
-          document.getElementById('changePinStep').textContent = 'Enter new PIN';
-          updateChangePinDots();
-          return;
-        }
-        try {
-          var result = await runServer('changePin', changePinSelectedUser, changePinCurrentPin, changePinNewPin);
-          if (result.success) {
-            document.getElementById('changePinStep').textContent = 'PIN changed!';
-            document.getElementById('changePinError').textContent = '';
-            setTimeout(function() { resetLoginScreen(); }, 1500);
-          } else {
-            document.getElementById('changePinError').textContent = result.error || 'Error changing PIN';
-            changePinEntry = '';
-            updateChangePinDots();
-          }
-        } catch (e) {
-          document.getElementById('changePinError').textContent = 'Connection error';
-          changePinEntry = '';
-          updateChangePinDots();
-        }
-      }
-    }
-
-    function resetLoginScreen() {
-      changePinPhase = 'select';
-      changePinEntry = '';
-      document.getElementById('changePinSection').style.display = 'none';
-      document.getElementById('loginUsers').style.display = 'grid';
-      document.getElementById('loginUsers').parentElement.querySelector('.login-subtitle').textContent = "Who's entering the kingdom?";
-      
-      // Restore original click handlers
-      var btns = document.querySelectorAll('.login-user-btn');
-      btns.forEach(function(btn) {
-        var user = btn.textContent.trim();
-        btn.onclick = function() { selectLoginUser(user); };
-      });
-    }
-
+    
     // ─── PUSH NOTIFICATION SETUP ─────────────────────
+    
+    
     var VAPID_PUBLIC_KEY = 'BAdgUmpQlVTYmnRBg_QbGeoXOlYU1ZeNhC2jm_z_NG5oBkqLbi2M7QwVLpriJqyEptqDvp9N7w4j_XebcB2uXIA';
 
     function urlBase64ToUint8Array(base64String) {
