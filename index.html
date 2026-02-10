@@ -3425,12 +3425,60 @@ async function deleteFamilyPoll(id) {
       notifPollTimer = setInterval(pollUnreadCount, 30000);
     }
 
+    // ─── PUSH NOTIFICATION SETUP ─────────────────────
+    var VAPID_PUBLIC_KEY = 'BAdgUmpQlVTYmnRBg_QbGeoXOlYU1ZeNhC2jm_z_NG5oBkqLbi2M7QwVLpriJqyEptqDvp9N7w4j_XebcB2uXIA;
+
+    function urlBase64ToUint8Array(base64String) {
+      var padding = '='.repeat((4 - base64String.length % 4) % 4);
+      var base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      var rawData = window.atob(base64);
+      var outputArray = new Uint8Array(rawData.length);
+      for (var i = 0; i < rawData.length; i++) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
+    async function setupPushNotifications() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        console.log('Push not supported');
+        return;
+      }
+
+      try {
+        var registration = await navigator.serviceWorker.ready;
+        var existing = await registration.pushManager.getSubscription();
+        
+        if (existing) {
+          await runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(existing)));
+          return;
+        }
+
+        var permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          console.log('Push permission denied');
+          return;
+        }
+
+        var subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+        });
+
+        await runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(subscription)));
+        console.log('Push subscription saved');
+      } catch (e) {
+        console.log('Push setup error:', e);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const user = document.getElementById('currentUser').value;
       document.getElementById('userSelect').value = user;
       applyUserPermissions(user);
       navigate('dashboard');
       startNotifPolling();
+      setupPushNotifications();
     });
   </script>
 </body>
