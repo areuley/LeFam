@@ -1171,6 +1171,19 @@ a:hover { color: var(--clr-accent); }
   color: var(--clr-text-muted);
   margin-top: 2px;
 }
+
+.notif-enable-btn {
+  cursor: pointer;
+  color: #dc3545;
+  font-size: 1.1rem;
+  padding: 4px;
+  animation: pulse-bell 2s infinite;
+}
+
+@keyframes pulse-bell {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
     
 </style>
 
@@ -1258,6 +1271,7 @@ a:hover { color: var(--clr-accent); }
     </nav>
 
     <!-- MOBILE HEADER -->
+    
     <header class="mobile-header d-lg-none">
       <button class="btn btn-link" onclick="toggleSidebar()">
         <i class="bi bi-list fs-4"></i>
@@ -1267,6 +1281,9 @@ a:hover { color: var(--clr-accent); }
         <div class="notif-bell" onclick="toggleNotifPanel()">
           <i class="bi bi-bell-fill"></i>
           <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+        </div>
+        <div class="notif-enable-btn" id="pushEnableBtn" onclick="setupPushNotifications()" style="display:none;">
+          <i class="bi bi-bell-slash"></i>
         </div>
         <div class="mobile-user">
           <i class="bi bi-person-circle"></i>
@@ -3467,6 +3484,8 @@ async function deleteFamilyPoll(id) {
 
         await runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(subscription)));
         console.log('Push subscription saved');
+        var enableBtn = document.getElementById('pushEnableBtn');
+        if (enableBtn) enableBtn.style.display = 'none';
       } catch (e) {
         console.log('Push setup error:', e);
       }
@@ -3478,7 +3497,19 @@ async function deleteFamilyPoll(id) {
       applyUserPermissions(user);
       navigate('dashboard');
       startNotifPolling();
-      setupPushNotifications();
+      // Show enable button if push not yet set up
+      if ('PushManager' in window && 'Notification' in window) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          reg.pushManager.getSubscription().then(function(sub) {
+            if (!sub && Notification.permission !== 'granted') {
+              document.getElementById('pushEnableBtn').style.display = 'block';
+            } else if (sub) {
+              // Re-save subscription in case user switched
+              runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(sub)));
+            }
+          });
+        });
+      }
     });
   </script>
 </body>
