@@ -273,23 +273,22 @@ body {
   display: none;
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  height: var(--mobile-tab-height);
-  padding-bottom: env(safe-area-inset-bottom);
   background: linear-gradient(180deg, var(--clr-sidebar-deep), var(--clr-sidebar));
   border-top: 1px solid rgba(212, 175, 55, 0.15);
   z-index: 998;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .mobile-tab-bar::-webkit-scrollbar { display: none; }
 
 .mobile-tab-bar-inner {
   display: flex;
   align-items: stretch;
-  height: 100%;
+  height: var(--mobile-tab-height);
   min-width: max-content;
-  padding: 0 0.25rem;
+  padding: 0.25rem 0.25rem 0;
 }
 
 .mobile-tab-bar .tab-link {
@@ -298,7 +297,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.5rem 0.75rem 0.3rem;
   color: var(--clr-sidebar-text);
   text-decoration: none;
   font-size: 0.58rem;
