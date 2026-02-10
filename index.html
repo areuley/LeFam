@@ -1184,14 +1184,192 @@ a:hover { color: var(--clr-accent); }
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+ /* ─── LOGIN SCREEN ─────────────────────────────── */
+
+.login-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--clr-sidebar), var(--clr-sidebar-deep));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
+}
+
+.login-card {
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.login-logo {
+  font-size: 2.5rem;
+  color: var(--clr-accent);
+  margin-bottom: 0.5rem;
+}
+
+.login-title {
+  font-family: 'Playfair Display', serif;
+  color: #F5F0E6;
+  font-size: 1.8rem;
+  margin: 0 0 0.25rem;
+}
+
+.login-subtitle {
+  color: rgba(245, 240, 230, 0.6);
+  font-size: 0.9rem;
+  margin: 0 0 2rem;
+}
+
+.login-users {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.login-user-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #F5F0E6;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-user-btn:hover, .login-user-btn:active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--clr-accent);
+  color: var(--clr-accent);
+}
+
+.login-back-btn {
+  background: none;
+  border: none;
+  color: rgba(245, 240, 230, 0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.login-selected-user {
+  color: var(--clr-accent);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.login-pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  background: transparent;
+  transition: all 0.15s;
+}
+
+.pin-dot.filled {
+  background: var(--clr-accent);
+  border-color: var(--clr-accent);
+}
+
+.login-pin-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  min-height: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.login-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.numpad-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F5F0E6;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0.85rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.numpad-btn:hover, .numpad-btn:active {
+  background: rgba(212, 175, 55, 0.2);
+}
     
 </style>
 
 </head>
 <body>
 
-  <!-- USER SWITCHER -->
-  <input type="hidden" id="currentUser" value="Anthony">
+ <!-- USER SWITCHER -->
+  <input type="hidden" id="currentUser" value="">
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo"><i class="bi bi-stars"></i></div>
+      <h1 class="login-title">Le'Fam Central</h1>
+      <p class="login-subtitle">Who's entering the kingdom?</p>
+      
+      <div class="login-users" id="loginUsers">
+        <button class="login-user-btn" onclick="selectLoginUser('Anthony')"><i class="bi bi-person-fill"></i> Anthony</button>
+        <button class="login-user-btn" onclick="selectLoginUser('Dad')"><i class="bi bi-person-fill"></i> Dad</button>
+        <button class="login-user-btn" onclick="selectLoginUser('Mom')"><i class="bi bi-person-fill"></i> Mom</button>
+        <button class="login-user-btn" onclick="selectLoginUser('Riah')"><i class="bi bi-person-fill"></i> Riah</button>
+        <button class="login-user-btn" onclick="selectLoginUser('Erike')"><i class="bi bi-person-fill"></i> Erike</button>
+        <button class="login-user-btn" onclick="selectLoginUser('Adriana')"><i class="bi bi-person-fill"></i> Adriana</button>
+      </div>
+
+      <div class="login-pin-section" id="loginPinSection" style="display:none;">
+        <button class="login-back-btn" onclick="showUserList()"><i class="bi bi-arrow-left"></i> Back</button>
+        <div class="login-selected-user" id="loginSelectedUser"></div>
+        <div class="login-pin-dots" id="pinDots">
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+        </div>
+        <div class="login-pin-error" id="pinError"></div>
+        <div class="login-numpad">
+          <button class="numpad-btn" onclick="enterDigit('1')">1</button>
+          <button class="numpad-btn" onclick="enterDigit('2')">2</button>
+          <button class="numpad-btn" onclick="enterDigit('3')">3</button>
+          <button class="numpad-btn" onclick="enterDigit('4')">4</button>
+          <button class="numpad-btn" onclick="enterDigit('5')">5</button>
+          <button class="numpad-btn" onclick="enterDigit('6')">6</button>
+          <button class="numpad-btn" onclick="enterDigit('7')">7</button>
+          <button class="numpad-btn" onclick="enterDigit('8')">8</button>
+          <button class="numpad-btn" onclick="enterDigit('9')">9</button>
+          <button class="numpad-btn" onclick="clearPin()"><i class="bi bi-x-lg"></i></button>
+          <button class="numpad-btn" onclick="enterDigit('0')">0</button>
+          <button class="numpad-btn" onclick="deleteDigit()"><i class="bi bi-backspace"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- LAYOUT WRAPPER -->
   <div class="app-layout">
@@ -1205,7 +1383,7 @@ a:hover { color: var(--clr-accent); }
         <h1 class="sidebar-title">Le'Fam Central</h1>
       </div>
 
-      <div class="sidebar-user-select">
+      <div class="sidebar-user-select" id="userSwitcher" style="display:none;">
         <label class="sidebar-label">Viewing as</label>
         <select id="userSelect" class="form-select form-select-sm" onchange="switchUser(this.value)">
           <option value="Anthony">Anthony</option>
@@ -1267,6 +1445,7 @@ a:hover { color: var(--clr-accent); }
 
       <div class="sidebar-footer">
         <small class="text-muted">Le'Fam Central v2.0</small>
+        <button class="btn-hub-outline btn-hub-sm" onclick="logout()" style="margin-top:0.5rem; width:100%; font-size:0.75rem;"><i class="bi bi-box-arrow-left"></i> Log Out</button>
       </div>
     </nav>
 
@@ -3436,6 +3615,102 @@ async function deleteFamilyPoll(id) {
       } catch (e) {}
     }
 
+    // ─── LOGIN SYSTEM ────────────────────────────────
+    
+    var loginSelectedUser = '';
+    var pinEntry = '';
+
+    function checkSavedLogin() {
+      var saved = localStorage.getItem('lefam_user');
+      if (saved) {
+        currentUser = saved;
+        document.getElementById('currentUser').value = saved;
+        document.getElementById('userSelect').value = saved;
+        document.getElementById('loginScreen').style.display = 'none';
+      if (saved === 'Anthony') {
+        document.getElementById('userSwitcher').style.display = 'block';
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function selectLoginUser(user) {
+      loginSelectedUser = user;
+      pinEntry = '';
+      document.getElementById('loginUsers').parentElement.querySelector('.login-subtitle').textContent = '';
+      document.getElementById('loginPinSection').style.display = 'block';
+      document.getElementById('loginUsers').style.display = 'none';
+      document.getElementById('loginSelectedUser').textContent = user;
+      document.getElementById('pinError').textContent = '';
+      updatePinDots();
+    }
+
+    function showUserList() {
+      document.getElementById('loginPinSection').style.display = 'none';
+      document.getElementById('loginUsers').style.display = 'grid';
+      document.getElementById('loginUsers').parentElement.querySelector('.login-subtitle').textContent = "Who's entering the kingdom?";
+      pinEntry = '';
+    }
+
+    function enterDigit(d) {
+      if (pinEntry.length >= 4) return;
+      pinEntry += d;
+      updatePinDots();
+      if (pinEntry.length === 4) {
+        verifyLogin();
+      }
+    }
+
+    function deleteDigit() {
+      pinEntry = pinEntry.slice(0, -1);
+      updatePinDots();
+      document.getElementById('pinError').textContent = '';
+    }
+
+    function clearPin() {
+      pinEntry = '';
+      updatePinDots();
+      document.getElementById('pinError').textContent = '';
+    }
+
+    function updatePinDots() {
+      var dots = document.querySelectorAll('.pin-dot');
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle('filled', i < pinEntry.length);
+      });
+    }
+
+    async function verifyLogin() {
+      try {
+        var result = await runServer('verifyPin', loginSelectedUser, pinEntry);
+        if (result.success) {
+          localStorage.setItem('lefam_user', loginSelectedUser);
+          currentUser = loginSelectedUser;
+          document.getElementById('currentUser').value = loginSelectedUser;
+          document.getElementById('userSelect').value = loginSelectedUser;
+          document.getElementById('loginScreen').style.display = 'none';
+          applyUserPermissions(loginSelectedUser);
+          navigate('dashboard');
+          startNotifPolling();
+          setupPushNotifications();
+        } else {
+          document.getElementById('pinError').textContent = 'Wrong PIN — try again';
+          pinEntry = '';
+          updatePinDots();
+        }
+      } catch (e) {
+        document.getElementById('pinError').textContent = 'Connection error';
+        pinEntry = '';
+        updatePinDots();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('lefam_user');
+      location.reload();
+    }
+  
     function startNotifPolling() {
       pollUnreadCount();
       if (notifPollTimer) clearInterval(notifPollTimer);
@@ -3493,25 +3768,26 @@ async function deleteFamilyPoll(id) {
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const user = document.getElementById('currentUser').value;
-      document.getElementById('userSelect').value = user;
-      applyUserPermissions(user);
-      navigate('dashboard');
-      startNotifPolling();
-      // Show enable button if push not yet set up
-      if ('PushManager' in window && 'Notification' in window) {
-        navigator.serviceWorker.ready.then(function(reg) {
-          reg.pushManager.getSubscription().then(function(sub) {
-            if (!sub && Notification.permission !== 'granted') {
-              document.getElementById('pushEnableBtn').style.display = 'block';
-            } else if (sub) {
-              // Re-save subscription in case user switched
-              runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(sub)));
-              if (navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({ user: currentUser });
-            }
+      if (checkSavedLogin()) {
+        const user = document.getElementById('currentUser').value;
+        document.getElementById('userSelect').value = user;
+        applyUserPermissions(user);
+        navigate('dashboard');
+        startNotifPolling();
+        if ('PushManager' in window && 'Notification' in window) {
+          navigator.serviceWorker.ready.then(function(reg) {
+            reg.pushManager.getSubscription().then(function(sub) {
+              if (!sub && Notification.permission !== 'granted') {
+                document.getElementById('pushEnableBtn').style.display = 'block';
+              } else if (sub) {
+                runServer('savePushSubscription', currentUser, JSON.parse(JSON.stringify(sub)));
+                if (navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({ user: currentUser });
+              }
+            });
           });
-        });
+        }
       }
+      // If no saved login, login screen stays visible
     });
   </script>
 </body>
