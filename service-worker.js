@@ -1,6 +1,12 @@
 var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzm1heZA6dcYx27REb0xN9_UoP7NPGjE9RnW-c2BdXh8schWMhiRqQiym852rEHJAel/exec';
 var PUSH_USER = 'Anthony';
 
+self.addEventListener('message', function(event) {
+  if (event.data && event.data.user) {
+    PUSH_USER = event.data.user;
+  }
+});
+
 self.addEventListener('install', function(event) {
   self.skipWaiting();
 });
