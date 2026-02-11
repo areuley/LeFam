@@ -1498,7 +1498,7 @@ a:hover { color: var(--clr-accent); }
     </header>
 
     <!-- CHANGE PIN MODAL -->
-    <div class="modal fade" id="changePinModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal fade" id="changePinModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">
       <div class="modal-header"><h5 class="modal-title">Change PIN</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body hub-form">
         <div class="mb-3"><label class="form-label">Current PIN</label><input type="password" class="form-control" id="currentPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
@@ -1506,7 +1506,7 @@ a:hover { color: var(--clr-accent); }
         <div class="mb-3"><label class="form-label">Confirm New PIN</label><input type="password" class="form-control" id="confirmPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
       </div>
       <div class="modal-footer"><button class="btn-hub" onclick="submitChangePin()">Update PIN</button></div>
-    </div></div></div>
+</div></div></div>
 
     <!-- NOTIFICATION DROPDOWN -->
     <div class="notif-panel" id="notifPanel">
