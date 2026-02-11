@@ -1498,7 +1498,7 @@ a:hover { color: var(--clr-accent); }
     </header>
 
     <!-- CHANGE PIN MODAL -->
-    <div class="modal fade" id="changePinModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">
+    <div class="modal fade" id="changePinModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-header"><h5 class="modal-title">Change PIN</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body hub-form">
         <div class="mb-3"><label class="form-label">Current PIN</label><input type="password" class="form-control" id="currentPinInput" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div>
@@ -1811,7 +1811,7 @@ async function loadCalendar() {
       '</div>' +
       '<div id="calGrid" class="cal-grid"></div>' +
     '</div>' +
-    '<div class="modal fade" id="eventModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="eventModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">Add Event</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form">' +
         '<div class="mb-3"><label class="form-label">Title</label><input type="text" class="form-control" id="eventTitle" placeholder="e.g., Family BBQ"></div>' +
@@ -1821,7 +1821,7 @@ async function loadCalendar() {
       '<div class="modal-footer"><button class="btn-hub" onclick="saveEvent()">Save Event</button></div>' +
     '</div></div></div>' +
 
-    '<div class="modal fade" id="eventDetailModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+    '<div class="modal fade" id="eventDetailModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title" id="eventDetailTitle"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body">' +
         '<p id="eventDetailDesc" style="font-size:0.9rem;color:var(--clr-text-muted);margin:0 0 0.5rem;"></p>' +
@@ -2025,7 +2025,7 @@ async function loadMeals() {
     '<div class="page-header"><h2>The Feast Hall \uD83C\uDF7D</h2><p>Plan and vote on family dinners</p></div>' +
     '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Active Polls</h3>' + buttonsHtml + '</div><div id="mealPolls"><div class="loading-spinner"></div></div></div>' +
     
-    '<div class="modal fade" id="mealModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="mealModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">Create Meal Poll</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form">' +
         '<div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control" id="mealDate"></div>' +
@@ -2245,7 +2245,7 @@ async function loadQuests() {
     '<div id="questList"><div class="loading-spinner"></div></div>' +
     
     // --- NEW QUEST MODAL ---
-    '<div class="modal fade" id="questModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="questModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">' + (isAdriana ? 'Propose a Quest' : 'Post a Quest') + '</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       
       '<div class="modal-body hub-form">' +
@@ -2271,7 +2271,7 @@ async function loadQuests() {
     '</div></div></div>' +
     
     // --- COUNTER OFFER MODAL ---
-    '<div class="modal fade" id="counterModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+    '<div class="modal fade" id="counterModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">Counter Offer</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form"><input type="hidden" id="counterQuestId"><div class="mb-3"><label class="form-label">Your counter price ($)</label><input type="number" class="form-control" id="counterPrice" step="0.50" min="0"></div></div>' +
       '<div class="modal-footer"><button class="btn-hub" onclick="submitCounter()">Send Counter</button></div>' +
@@ -2625,7 +2625,7 @@ async function loadBills() {
     '</div>' +
 
     // --- CREATE INVOICE MODAL ---
-    '<div class="modal fade" id="billModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="billModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">Create Invoice</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form">' +
         '<div class="row">' +
@@ -2649,7 +2649,7 @@ async function loadBills() {
     '</div></div></div>' +
 
     // --- VIEW DETAILS MODAL ---
-    '<div class="modal fade" id="billDetailModal" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content">' +
+    '<div class="modal fade" id="billDetailModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title" id="viewBillTitle"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body">' +
         '<div id="viewBillItems" style="margin-bottom:1rem;"></div>' +
@@ -2905,7 +2905,7 @@ async function loadRegistry() {
     '</div>' +
 
     // --- CREATE EVENT MODAL ---
-    '<div class="modal fade" id="createEventModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="createEventModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">New Event</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form">' +
         '<div class="mb-3"><label class="form-label">Event Title</label><input type="text" class="form-control" id="evtTitle"></div>' +
@@ -3366,7 +3366,7 @@ async function loadFamilyVote() {
     '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Active Polls</h3><button class="btn-hub" onclick="showFamilyVoteModal()"><i class="bi bi-plus-lg"></i> New Vote</button></div><div id="familyVotesActive"><div class="loading-spinner"></div></div></div>' +
     '<div class="hub-card"><div class="hub-card-header"><h3 class="hub-card-title">Past Results</h3></div><div id="familyVotesClosed"><div class="loading-spinner"></div></div></div>' +
 
-    '<div class="modal fade" id="familyVoteModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+    '<div class="modal fade" id="familyVoteModal" tabindex="-1"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content">' +
       '<div class="modal-header"><h5 class="modal-title">Create Family Vote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>' +
       '<div class="modal-body hub-form">' +
         '<div class="mb-3"><label class="form-label">Topic</label><input type="text" class="form-control" id="voteTitle" placeholder="e.g. Movie Night"></div>' +
